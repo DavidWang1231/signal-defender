@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SIGNAL // 信号防线 REV 3.4</title>
+<title>SIGNAL // 信号防线 REV 3.5</title>
 <style>
   :root {
     --bg: #06231a;
@@ -216,13 +216,13 @@
 
   <div id="hud" class="hidden">
     <div class="col">
-      <span class="label" id="labelL">SCORE / 得分</span>
+      <span class="label" id="labelL" data-en="SCORE">SCORE / 得分</span>
       <span id="score">0</span>
       <span id="combo"></span>
       <span id="weaponHud"></span>
     </div>
     <div class="col right">
-      <span class="label" id="labelR">WAVE / 波次</span>
+      <span class="label" id="labelR" data-en="WAVE">WAVE / 波次</span>
       <span id="wave">1</span>
       <span id="lives"></span>
       <span id="bombsHud"></span>
@@ -241,40 +241,41 @@
 
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
-    <div class="refdes">REV 3.4 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
+    <button id="langBtn" class="ctl" style="top:12px;left:12px;font-size:12px;padding:7px 12px;z-index:11">EN</button>
+    <div class="refdes">REV 3.5 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
     <div class="brand">SIGNAL</div>
-    <div class="brand-sub">信 号 防 线</div>
+    <div class="brand-sub" data-en="D E F E N D E R">信 号 防 线</div>
     <div class="menu-btns">
-      <button class="btn" id="startBtn">POWER ON // 开始</button>
-      <button class="btn" id="storyBtn">STORY // 主线剧情</button>
-      <button class="btn" id="dailyBtn">DAILY // 每日挑战</button>
-      <button class="btn" id="versusBtn">VERSUS // 双人对战</button>
-      <button class="btn ghostbtn" id="shopBtn">SHOP // 商店</button>
-      <button class="btn ghostbtn" id="hangarBtn">HANGAR // 机库</button>
-      <button class="btn ghostbtn" id="achBtn">TROPHY // 成就</button>
-      <button class="btn ghostbtn" id="settingsBtn">AUDIO // 音量设置</button>
-      <button class="btn ghostbtn" id="helpBtn">MANUAL // 说明</button>
+      <button class="btn" id="startBtn" data-en="POWER ON // ENDLESS">POWER ON // 开始</button>
+      <button class="btn" id="storyBtn" data-en="STORY // CAMPAIGN">STORY // 主线剧情</button>
+      <button class="btn" id="dailyBtn" data-en="DAILY // CHALLENGE">DAILY // 每日挑战</button>
+      <button class="btn" id="versusBtn" data-en="VERSUS // 2P LOCAL">VERSUS // 双人对战</button>
+      <button class="btn ghostbtn" id="shopBtn" data-en="SHOP">SHOP // 商店</button>
+      <button class="btn ghostbtn" id="hangarBtn" data-en="HANGAR">HANGAR // 机库</button>
+      <button class="btn ghostbtn" id="achBtn" data-en="TROPHY // ACHIEVEMENTS">TROPHY // 成就</button>
+      <button class="btn ghostbtn" id="settingsBtn" data-en="AUDIO // VOLUME">AUDIO // 音量设置</button>
+      <button class="btn ghostbtn" id="helpBtn" data-en="MANUAL // HOW TO PLAY">MANUAL // 说明</button>
     </div>
     <div class="menu-stats" id="menuStats"></div>
   </div>
 
   <!-- 机库 -->
   <div id="hangar" class="overlay hidden">
-    <div class="hangar-title">HANGAR // 机库</div>
-    <div class="hangar-sec">— 信号载体 SHIP —</div>
+    <div class="hangar-title" data-en="HANGAR">HANGAR // 机库</div>
+    <div class="hangar-sec" data-en="— SHIP —">— 信号载体 SHIP —</div>
     <div class="cards" id="shipCards"></div>
-    <div class="hangar-sec">— 阻焊配色 SOLDERMASK —</div>
+    <div class="hangar-sec" data-en="— SOLDERMASK —">— 阻焊配色 SOLDERMASK —</div>
     <div class="cards" id="themeCards"></div>
     <div style="height:24px"></div>
-    <button class="btn ghostbtn" id="hangarBack">BACK // 返回</button>
+    <button class="btn ghostbtn" id="hangarBack" data-en="BACK">BACK // 返回</button>
     <div style="height:10px"></div>
   </div>
 
   <!-- 说明 -->
   <div id="help" class="overlay hidden">
-    <div class="hangar-title">MANUAL // 说明</div>
+    <div class="hangar-title" data-en="MANUAL">MANUAL // 说明</div>
     <div style="height:14px"></div>
-    <div class="howto">
+    <div class="howto" id="helpText">
       <b>移动:</b> WASD / 方向键 / 手指拖动,自动开火<br>
       <b>手机操作:</b> 单指在屏幕任意位置拖动即可移动(飞机不会被手指挡住);拖动时用<b>第二根手指点一下屏幕 = 冲刺</b>;左下按钮冲刺、右下按钮 EMP。横屏竖屏均可,旋转后自动适配。<br>
       <b>冲刺:</b> Shift 或左下按钮 · 冲刺期间无敌<br>
@@ -298,125 +299,125 @@
       在机库解锁新皮肤:每个皮肤有专属特性,解锁进度自动保存。<br>
       <b>军械库 ARSENAL</b> 系列战机各配一种独特武器:双管、追踪导弹、贯穿弹、重炮、蛇形波动弹——手感各不相同,可在商店购买。
     </div>
-    <button class="btn ghostbtn" id="helpBack">BACK // 返回</button>
+    <button class="btn ghostbtn" id="helpBack" data-en="BACK">BACK // 返回</button>
   </div>
 
   <!-- 音量设置 -->
   <div id="settings" class="overlay hidden">
-    <div class="hangar-title">AUDIO // 音量设置</div>
+    <div class="hangar-title" data-en="AUDIO">AUDIO // 音量设置</div>
     <div style="height:20px"></div>
     <div class="setrow">
-      <label>背景音乐</label>
+      <label data-en="BGM MUSIC">背景音乐</label>
       <input type="range" id="bgmSlider" min="0" max="100" value="60">
       <span class="val" id="bgmVal">60%</span>
     </div>
     <div class="setrow">
-      <label>游戏音效</label>
+      <label data-en="SFX">游戏音效</label>
       <input type="range" id="sfxSlider" min="0" max="100" value="80">
       <span class="val" id="sfxVal">80%</span>
     </div>
     <div style="height:6px"></div>
     <button class="btn ghostbtn" id="bgmToggleBtn" style="min-width:200px">背景音乐: 开</button>
     <div style="height:10px"></div>
-    <button class="btn" id="sfxTestBtn" style="min-width:200px">试听音效</button>
+    <button class="btn" id="sfxTestBtn" style="min-width:200px" data-en="TEST SFX">试听音效</button>
     <div style="height:24px"></div>
-    <button class="btn ghostbtn" id="settingsBack">BACK // 返回</button>
+    <button class="btn ghostbtn" id="settingsBack" data-en="BACK">BACK // 返回</button>
   </div>
 
   <!-- 剧情:序幕 -->
   <div id="storyIntro" class="overlay hidden">
-    <div class="refdes">STORY MODE // 主线剧情</div>
+    <div class="refdes" data-en="STORY MODE">STORY MODE // 主线剧情</div>
     <div class="hangar-title" id="storyIntroTitle">PROLOGUE // 序章</div>
     <div style="height:10px"></div>
     <div class="howto" id="storyIntroText" style="text-align:center;max-width:480px"></div>
     <div class="menu-btns">
-      <button class="btn" id="storyBeginBtn">DEPLOY // 出发</button>
-      <button class="btn ghostbtn" id="storyIntroBack">BACK // 返回</button>
+      <button class="btn" id="storyBeginBtn" data-en="DEPLOY">DEPLOY // 出发</button>
+      <button class="btn ghostbtn" id="storyIntroBack" data-en="BACK">BACK // 返回</button>
     </div>
   </div>
 
   <!-- 剧情:章节过场 -->
   <div id="storyBeat" class="overlay hidden">
-    <div class="refdes">TRANSMISSION RECEIVED // 收到传输</div>
+    <div class="refdes" data-en="TRANSMISSION RECEIVED">TRANSMISSION RECEIVED // 收到传输</div>
     <div class="hangar-title" id="storyBeatTitle"></div>
     <div style="height:10px"></div>
     <div class="howto" id="storyBeatText" style="text-align:center;max-width:480px"></div>
-    <button class="btn" id="storyContinueBtn">CONTINUE // 继续</button>
+    <button class="btn" id="storyContinueBtn" data-en="CONTINUE">CONTINUE // 继续</button>
   </div>
 
   <!-- 对战选船 -->
   <div id="vsSelect" class="overlay hidden">
-    <div class="hangar-title">VERSUS // 选择战机</div>
-    <div id="vsKeyNote" class="refdes" style="color:var(--fault);display:none">⚠ 双人对战需要实体键盘:P1 = WASD/Q/E,P2 = 方向键/Shift/Enter</div>
+    <div class="hangar-title" data-en="VERSUS // SELECT SHIPS">VERSUS // 选择战机</div>
+    <div id="vsKeyNote" class="refdes" style="color:var(--fault);display:none" data-en="⚠ Versus needs a physical keyboard: P1 = WASD/Q/E, P2 = Arrows/Shift/Enter">⚠ 双人对战需要实体键盘:P1 = WASD/Q/E,P2 = 方向键/Shift/Enter</div>
     <div style="display:flex;gap:28px;flex-wrap:wrap;justify-content:center;width:100%">
       <div>
-        <div class="hangar-sec" style="color:var(--copper)">P1 选择</div>
+        <div class="hangar-sec" style="color:var(--copper)" data-en="P1 PICK">P1 选择</div>
         <div class="cards" id="vsCards1"></div>
       </div>
       <div>
-        <div class="hangar-sec" style="color:var(--cyan)">P2 选择</div>
+        <div class="hangar-sec" style="color:var(--cyan)" data-en="P2 PICK">P2 选择</div>
         <div class="cards" id="vsCards2"></div>
       </div>
     </div>
     <div style="height:20px"></div>
     <div class="menu-btns">
-      <button class="btn" id="vsStartBtn">FIGHT // 开始对战</button>
-      <button class="btn ghostbtn" id="vsBack">BACK // 返回</button>
+      <button class="btn" id="vsStartBtn" data-en="FIGHT">FIGHT // 开始对战</button>
+      <button class="btn ghostbtn" id="vsBack" data-en="BACK">BACK // 返回</button>
     </div>
   </div>
 
   <!-- 商店 -->
   <div id="shop" class="overlay hidden">
-    <div class="hangar-title">SHOP // 商店</div>
-    <div class="refdes">持有金币 <span id="shopCoins" style="color:var(--gold)">0</span></div>
+    <div class="hangar-title" data-en="SHOP">SHOP // 商店</div>
+    <div class="refdes"><span data-en="COINS">持有金币</span> <span id="shopCoins" style="color:var(--gold)">0</span></div>
     <div id="shopList" style="display:flex;flex-direction:column;align-items:center"></div>
     <div style="height:24px"></div>
-    <button class="btn ghostbtn" id="shopBack">BACK // 返回</button>
+    <button class="btn ghostbtn" id="shopBack" data-en="BACK">BACK // 返回</button>
     <div style="height:10px"></div>
   </div>
 
   <!-- 成就 -->
   <div id="achievs" class="overlay hidden">
-    <div class="hangar-title">TROPHY // 成就</div>
+    <div class="hangar-title" data-en="TROPHY">TROPHY // 成就</div>
     <div class="refdes" id="achCount"></div>
     <div class="ach-list" id="achList"></div>
     <div style="height:20px"></div>
-    <button class="btn ghostbtn" id="achBack">BACK // 返回</button>
+    <button class="btn ghostbtn" id="achBack" data-en="BACK">BACK // 返回</button>
     <div style="height:10px"></div>
   </div>
 
   <!-- 结算 -->
   <div id="gameover" class="overlay hidden">
     <div class="refdes fault blink">!! BUS FAULT DETECTED !!</div>
-    <div class="brand fault" style="text-shadow:0 0 18px rgba(255,82,82,0.5)">信号丢失</div>
+    <div class="brand fault" style="text-shadow:0 0 18px rgba(255,82,82,0.5)" data-en="SIGNAL LOST">信号丢失</div>
     <div style="height:16px"></div>
     <div id="soloStats">
-      <div class="stat-line">最终得分 <b id="finalScore">0</b></div>
-      <div class="stat-line">到达波次 <b id="finalWave">1</b></div>
-      <div class="stat-line">最高连击 <b id="finalCombo">0</b>x</div>
-      <div class="stat-line">击杀 Boss <b id="finalBoss">0</b></div>
-      <div class="stat-line"><span id="bestLabel">历史最佳</span> <b id="bestScore">0</b></div>
-      <div class="stat-line">金币 +<b id="coinGain">0</b> · 持有 <b id="coinTotal">0</b> ¤</div>
+      <div class="stat-line"><span data-en="SCORE">最终得分</span> <b id="finalScore">0</b></div>
+      <div class="stat-line"><span data-en="WAVE REACHED">到达波次</span> <b id="finalWave">1</b></div>
+      <div class="stat-line"><span data-en="MAX COMBO">最高连击</span> <b id="finalCombo">0</b>x</div>
+      <div class="stat-line"><span data-en="BOSSES DOWN">击杀 Boss</span> <b id="finalBoss">0</b></div>
+      <div class="stat-line"><span id="bestLabel" data-en="BEST">历史最佳</span> <b id="bestScore">0</b></div>
+      <div class="stat-line"><span data-en="COINS">金币</span> +<b id="coinGain">0</b> · <span data-en="TOTAL">持有</span> <b id="coinTotal">0</b> ¤</div>
     </div>
     <div id="vsResult" class="hidden">
       <div class="stat-line" style="font-size:24px" id="vsWinner"></div>
       <div class="stat-line">P1 <b id="vsS1">0</b> &nbsp;vs&nbsp; P2 <b id="vsS2">0</b></div>
-      <div class="stat-line">到达波次 <b id="vsWave">1</b></div>
+      <div class="stat-line"><span data-en="WAVE REACHED">到达波次</span> <b id="vsWave">1</b></div>
     </div>
     <div id="unlockList"></div>
     <div style="height:20px"></div>
     <div class="menu-btns">
-      <button class="btn" id="retryBtn">REBOOT // 再来</button>
-      <button class="btn ghostbtn" id="toMenuBtn">MENU // 主菜单</button>
+      <button class="btn" id="retryBtn" data-en="REBOOT // RETRY">REBOOT // 再来</button>
+      <button class="btn ghostbtn" id="toMenuBtn" data-en="MENU">MENU // 主菜单</button>
     </div>
   </div>
 
   <div id="pauseOverlay" class="overlay hidden">
     <div class="brand" style="font-size:32px">PAUSED</div>
-    <div class="brand-sub" style="letter-spacing:0.3em">时钟已停</div>
+    <div class="brand-sub" style="letter-spacing:0.3em" data-en="CLOCK HALTED">时钟已停</div>
     <div class="menu-btns">
       <button class="btn" id="resumeBtn">RESUME</button>
-      <button class="btn ghostbtn" id="quitBtn">QUIT // 回主菜单</button>
+      <button class="btn ghostbtn" id="quitBtn" data-en="QUIT">QUIT // 回主菜单</button>
     </div>
   </div>
 </div>
@@ -424,6 +425,17 @@
 <script>
 (() => {
 "use strict";
+
+// ============ 语言 / Language ============
+// 优先读用户手动选择,否则按浏览器语言自动判断;切换语言时写入后 reload
+const LANG = (() => {
+  try {
+    const s = localStorage.getItem("signal_lang");
+    if (s === "zh" || s === "en") return s;
+  } catch (e) {}
+  return (navigator.language || "en").toLowerCase().startsWith("zh") ? "zh" : "en";
+})();
+const T = (zh, en) => LANG === "zh" ? zh : en;
 
 // ============ 基础 ============
 const canvas = document.getElementById("game");
@@ -454,19 +466,19 @@ const C = {
 
 // ============ 阻焊配色主题 ============
 const THEMES = [
-  { id: "fr4",    name: "FR4 经典绿",  bg: "#06231a", trace: "rgba(232,131,58,0.09)",  pad: "rgba(230,193,90,0.10)",  ov: "rgba(4,22,16,0.88)" },
-  { id: "blue",   name: "深海蓝 ENIG", bg: "#071c2e", trace: "rgba(130,190,230,0.11)", pad: "rgba(230,193,90,0.12)",  ov: "rgba(4,16,26,0.88)" },
-  { id: "purple", name: "OSHPARK 紫",  bg: "#170b2b", trace: "rgba(200,160,255,0.11)", pad: "rgba(230,193,90,0.12)",  ov: "rgba(14,6,26,0.88)" },
-  { id: "red",    name: "烈焰红",      bg: "#260808", trace: "rgba(255,150,130,0.10)", pad: "rgba(230,193,90,0.12)",  ov: "rgba(24,4,4,0.88)" },
-  { id: "black",  name: "曜石黑",      bg: "#0b0b0d", trace: "rgba(232,131,58,0.11)",  pad: "rgba(210,210,210,0.10)", ov: "rgba(6,6,8,0.9)" },
+  { id: "fr4",    name: T("FR4 经典绿", "FR4 CLASSIC"),     bg: "#06231a", trace: "rgba(232,131,58,0.09)",  pad: "rgba(230,193,90,0.10)",  ov: "rgba(4,22,16,0.88)" },
+  { id: "blue",   name: T("深海蓝 ENIG", "ENIG BLUE"),      bg: "#071c2e", trace: "rgba(130,190,230,0.11)", pad: "rgba(230,193,90,0.12)",  ov: "rgba(4,16,26,0.88)" },
+  { id: "purple", name: T("OSHPARK 紫", "OSHPARK PURPLE"),  bg: "#170b2b", trace: "rgba(200,160,255,0.11)", pad: "rgba(230,193,90,0.12)",  ov: "rgba(14,6,26,0.88)" },
+  { id: "red",    name: T("烈焰红", "BLAZE RED"),           bg: "#260808", trace: "rgba(255,150,130,0.10)", pad: "rgba(230,193,90,0.12)",  ov: "rgba(24,4,4,0.88)" },
+  { id: "black",  name: T("曜石黑", "OBSIDIAN BLACK"),      bg: "#0b0b0d", trace: "rgba(232,131,58,0.11)",  pad: "rgba(210,210,210,0.10)", ov: "rgba(6,6,8,0.9)" },
 ];
 
 // ============ 飞船皮肤 ============
 // draw(g): 以(0,0)为中心、朝上绘制;约32px高
 const SKINS = [
   {
-    id: "signal", name: "SIGNAL 标准信号", trailColor: "#e8833a",
-    perkText: "均衡 · 无特性",
+    id: "signal", name: T("SIGNAL 标准信号", "SIGNAL STOCK"), trailColor: "#e8833a",
+    perkText: T("均衡 · 无特性", "Balanced · no perk"),
     unlock: null,
     perk: {},
     draw(g) {
@@ -481,9 +493,9 @@ const SKINS = [
     },
   },
   {
-    id: "goldfinger", name: "GOLD FINGER 金手指", trailColor: "#e6c15a",
-    perkText: "得分 +15%",
-    unlock: { type: "score", val: 8000, text: "历史最佳得分达到 8,000" },
+    id: "goldfinger", name: T("GOLD FINGER 金手指", "GOLD FINGER"), trailColor: "#e6c15a",
+    perkText: T("得分 +15%", "Score +15%"),
+    unlock: { type: "score", val: 8000, text: T("历史最佳得分达到 8,000", "Best score reaches 8,000") },
     perk: { scoreMult: 1.15 },
     draw(g) {
       g.strokeStyle = "#e6c15a"; g.fillStyle = "rgba(230,193,90,0.22)";
@@ -497,9 +509,9 @@ const SKINS = [
     },
   },
   {
-    id: "ghost", name: "GHOST 幽灵信号", trailColor: "#5ad0e6",
-    perkText: "冲刺冷却 1.6s → 1.0s",
-    unlock: { type: "wave", val: 10, text: "任意一局到达第 10 波" },
+    id: "ghost", name: T("GHOST 幽灵信号", "GHOST"), trailColor: "#5ad0e6",
+    perkText: T("冲刺冷却 1.6s → 1.0s", "Dash cooldown 1.6s → 1.0s"),
+    unlock: { type: "wave", val: 10, text: T("任意一局到达第 10 波", "Reach wave 10 in any run") },
     perk: { dashCd: 1.0 },
     draw(g) {
       g.strokeStyle = "#5ad0e6"; g.fillStyle = "rgba(90,208,230,0.14)";
@@ -515,9 +527,9 @@ const SKINS = [
     },
   },
   {
-    id: "fault", name: "FAULT 故障注入", trailColor: "#ff5252",
-    perkText: "初始 2 颗 EMP,上限 4",
-    unlock: { type: "boss", val: 3, text: "累计击杀 3 个 Boss" },
+    id: "fault", name: T("FAULT 故障注入", "FAULT INJECTION"), trailColor: "#ff5252",
+    perkText: T("初始 2 颗 EMP,上限 4", "Start with 2 EMPs, max 4"),
+    unlock: { type: "boss", val: 3, text: T("累计击杀 3 个 Boss", "Kill 3 bosses in total") },
     perk: { startBombs: 2, maxBombs: 4 },
     draw(g) {
       g.lineWidth = 2;
@@ -536,9 +548,9 @@ const SKINS = [
     },
   },
   {
-    id: "smd", name: "0201 贴片", trailColor: "#e9e4d4",
-    perkText: "被弹判定半径 13 → 9",
-    unlock: { type: "combo", val: 15, text: "单局最高连击达到 15×" },
+    id: "smd", name: T("0201 贴片", "0201 SMD"), trailColor: "#e9e4d4",
+    perkText: T("被弹判定半径 13 → 9", "Hitbox radius 13 → 9"),
+    unlock: { type: "combo", val: 15, text: T("单局最高连击达到 15×", "Reach a 15× combo in one run") },
     perk: { r: 9 },
     draw(g) {
       g.shadowColor = "#e9e4d4"; g.shadowBlur = 10;
@@ -553,9 +565,9 @@ const SKINS = [
     },
   },
   {
-    id: "overclock", name: "OVERCLOCK 超频", trailColor: "#ffb066",
-    perkText: "射速 +25%",
-    unlock: { type: "score", val: 20000, text: "历史最佳得分达到 20,000" },
+    id: "overclock", name: T("OVERCLOCK 超频", "OVERCLOCK"), trailColor: "#ffb066",
+    perkText: T("射速 +25%", "Fire rate +25%"),
+    unlock: { type: "score", val: 20000, text: T("历史最佳得分达到 20,000", "Best score reaches 20,000") },
     perk: { fireMult: 0.8 },
     draw(g) {
       const t = performance.now() / 1000;
@@ -576,9 +588,9 @@ const SKINS = [
     },
   },
   {
-    id: "tesla", name: "TESLA 电弧", trailColor: "#5ad0e6",
-    perkText: "击杀 25% 概率引发链状电弧",
-    unlock: { type: "boss", val: 6, text: "累计击杀 6 个 Boss" },
+    id: "tesla", name: T("TESLA 电弧", "TESLA ARC"), trailColor: "#5ad0e6",
+    perkText: T("击杀 25% 概率引发链状电弧", "Kills: 25% chance to chain-arc"),
+    unlock: { type: "boss", val: 6, text: T("累计击杀 6 个 Boss", "Kill 6 bosses in total") },
     perk: { chain: 0.25 },
     draw(g) {
       const t = performance.now() / 1000;
@@ -604,9 +616,9 @@ const SKINS = [
     },
   },
   {
-    id: "prism", name: "PRISM 棱镜", trailColor: "#ffffff",
-    perkText: "彩虹拖尾 · 道具持续 +60%",
-    unlock: { type: "pu", val: 40, text: "累计拾取 40 个道具" },
+    id: "prism", name: T("PRISM 棱镜", "PRISM"), trailColor: "#ffffff",
+    perkText: T("彩虹拖尾 · 道具持续 +60%", "Rainbow trail · power-ups last +60%"),
+    unlock: { type: "pu", val: 40, text: T("累计拾取 40 个道具", "Pick up 40 power-ups in total") },
     perk: { puDur: 1.6, rainbow: true },
     draw(g) {
       const hue = (performance.now() / 8) % 360;
@@ -624,9 +636,9 @@ const SKINS = [
     },
   },
   {
-    id: "reaper", name: "REAPER 收割者", trailColor: "#ff5252",
-    perkText: "受击不清空连击",
-    unlock: { type: "kills", val: 500, text: "累计击杀 500 个敌人" },
+    id: "reaper", name: T("REAPER 收割者", "REAPER"), trailColor: "#ff5252",
+    perkText: T("受击不清空连击", "Getting hit keeps your combo"),
+    unlock: { type: "kills", val: 500, text: T("累计击杀 500 个敌人", "Kill 500 enemies in total") },
     perk: { keepCombo: true },
     draw(g) {
       const pulse = 0.5 + Math.sin(performance.now() / 1000 * 6) * 0.5;
@@ -645,9 +657,9 @@ const SKINS = [
   },
   // ===== 商店主题皮肤 =====
   {
-    id: "xwing", name: "X-WING 星际战机", trailColor: "#9fb4c8",
-    perkText: "子弹速度 +20%",
-    shop: { series: "星战系列 STAR", price: 500 },
+    id: "xwing", name: T("X-WING 星际战机", "X-WING"), trailColor: "#9fb4c8",
+    perkText: T("子弹速度 +20%", "Bullet speed +20%"),
+    shop: { series: T("星战系列 STAR", "STAR SERIES"), price: 500 },
     perk: { bulletSpd: 1.2 },
     draw(g) {
       g.lineWidth = 1.8; g.strokeStyle = "#c8d2dc"; g.fillStyle = "rgba(200,210,220,0.15)";
@@ -665,9 +677,9 @@ const SKINS = [
     },
   },
   {
-    id: "tie", name: "TIE 钛战机", trailColor: "#8a94a0",
-    perkText: "EMP 对 Boss 伤害 +50%",
-    shop: { series: "星战系列 STAR", price: 500 },
+    id: "tie", name: T("TIE 钛战机", "TIE FIGHTER"), trailColor: "#8a94a0",
+    perkText: T("EMP 对 Boss 伤害 +50%", "EMP boss damage +50%"),
+    shop: { series: T("星战系列 STAR", "STAR SERIES"), price: 500 },
     perk: { bombDmg: 1.5 },
     draw(g) {
       g.lineWidth = 1.8; g.strokeStyle = "#aab4be";
@@ -687,9 +699,9 @@ const SKINS = [
     },
   },
   {
-    id: "soccer", name: "SOCCER 世界波", trailColor: "#e9e4d4",
-    perkText: "道具吸取范围 +30",
-    shop: { series: "运动系列 SPORT", price: 400 },
+    id: "soccer", name: T("SOCCER 世界波", "SOCCER"), trailColor: "#e9e4d4",
+    perkText: T("道具吸取范围 +30", "Pickup magnet range +30"),
+    shop: { series: T("运动系列 SPORT", "SPORT SERIES"), price: 400 },
     perk: { magnet: 30 },
     draw(g) {
       g.shadowColor = "#e9e4d4"; g.shadowBlur = 8;
@@ -713,9 +725,9 @@ const SKINS = [
     },
   },
   {
-    id: "hoops", name: "HOOPS 绝杀球", trailColor: "#e8833a",
-    perkText: "擦弹得分 ×3",
-    shop: { series: "运动系列 SPORT", price: 400 },
+    id: "hoops", name: T("HOOPS 绝杀球", "HOOPS"), trailColor: "#e8833a",
+    perkText: T("擦弹得分 ×3", "Graze score ×3"),
+    shop: { series: T("运动系列 SPORT", "SPORT SERIES"), price: 400 },
     perk: { grazeX: 3 },
     draw(g) {
       g.shadowColor = "#e8833a"; g.shadowBlur = 10;
@@ -731,9 +743,9 @@ const SKINS = [
     },
   },
   {
-    id: "gt", name: "GT 超跑", trailColor: "#ff5252",
-    perkText: "移动速度 +15%",
-    shop: { series: "跑车系列 SPEED", price: 600 },
+    id: "gt", name: T("GT 超跑", "GT SUPERCAR"), trailColor: "#ff5252",
+    perkText: T("移动速度 +15%", "Move speed +15%"),
+    shop: { series: T("跑车系列 SPEED", "SPEED SERIES"), price: 600 },
     perk: { speed: 1.15 },
     draw(g) {
       g.fillStyle = "#111";
@@ -751,9 +763,9 @@ const SKINS = [
     },
   },
   {
-    id: "f1", name: "F1 方程式", trailColor: "#5ad0e6",
-    perkText: "冲刺无敌时间 +60%",
-    shop: { series: "跑车系列 SPEED", price: 700 },
+    id: "f1", name: T("F1 方程式", "F1 FORMULA"), trailColor: "#5ad0e6",
+    perkText: T("冲刺无敌时间 +60%", "Dash invulnerability +60%"),
+    shop: { series: T("跑车系列 SPEED", "SPEED SERIES"), price: 700 },
     perk: { dashInv: 0.56 },
     draw(g) {
       g.fillStyle = "#e6c15a";
@@ -772,9 +784,9 @@ const SKINS = [
   },
   // ===== 军械库:异型武器战机 =====
   {
-    id: "vector", name: "VECTOR 矢量", trailColor: "#e6c15a",
-    perkText: "武器: 双管平行弹",
-    shop: { series: "军械库 ARSENAL", price: 350 },
+    id: "vector", name: T("VECTOR 矢量", "VECTOR"), trailColor: "#e6c15a",
+    perkText: T("武器: 双管平行弹", "Weapon: twin parallel shot"),
+    shop: { series: T("军械库 ARSENAL", "ARSENAL"), price: 350 },
     perk: { gun: "twin" },
     draw(g) {
       g.strokeStyle = "#e6c15a"; g.fillStyle = "rgba(230,193,90,0.18)";
@@ -789,9 +801,9 @@ const SKINS = [
     },
   },
   {
-    id: "ripple", name: "RIPPLE 涟漪", trailColor: "#b98bff",
-    perkText: "武器: 蛇形波动弹",
-    shop: { series: "军械库 ARSENAL", price: 500 },
+    id: "ripple", name: T("RIPPLE 涟漪", "RIPPLE"), trailColor: "#b98bff",
+    perkText: T("武器: 蛇形波动弹", "Weapon: serpentine wave shot"),
+    shop: { series: T("军械库 ARSENAL", "ARSENAL"), price: 500 },
     perk: { gun: "wave" },
     draw(g) {
       const t = performance.now() / 1000;
@@ -809,9 +821,9 @@ const SKINS = [
     },
   },
   {
-    id: "hornet", name: "HORNET 大黄蜂", trailColor: "#5ad0e6",
-    perkText: "武器: 自动追踪导弹",
-    shop: { series: "军械库 ARSENAL", price: 700 },
+    id: "hornet", name: T("HORNET 大黄蜂", "HORNET"), trailColor: "#5ad0e6",
+    perkText: T("武器: 自动追踪导弹", "Weapon: homing missiles"),
+    shop: { series: T("军械库 ARSENAL", "ARSENAL"), price: 700 },
     perk: { gun: "homing" },
     draw(g) {
       g.strokeStyle = "#5ad0e6"; g.shadowColor = "#5ad0e6"; g.shadowBlur = 10; g.lineWidth = 1.6;
@@ -829,9 +841,9 @@ const SKINS = [
     },
   },
   {
-    id: "lance", name: "LANCE 长枪", trailColor: "#ffffff",
-    perkText: "武器: 贯穿穿刺弹",
-    shop: { series: "军械库 ARSENAL", price: 700 },
+    id: "lance", name: T("LANCE 长枪", "LANCE"), trailColor: "#ffffff",
+    perkText: T("武器: 贯穿穿刺弹", "Weapon: piercing lance"),
+    shop: { series: T("军械库 ARSENAL", "ARSENAL"), price: 700 },
     perk: { gun: "pierce" },
     draw(g) {
       g.strokeStyle = "#e9e4d4"; g.fillStyle = "rgba(233,228,212,0.15)";
@@ -846,9 +858,9 @@ const SKINS = [
     },
   },
   {
-    id: "mortar", name: "MORTAR 迫击", trailColor: "#ffb066",
-    perkText: "武器: 重型高伤炮",
-    shop: { series: "军械库 ARSENAL", price: 800 },
+    id: "mortar", name: T("MORTAR 迫击", "MORTAR"), trailColor: "#ffb066",
+    perkText: T("武器: 重型高伤炮", "Weapon: heavy cannon"),
+    shop: { series: T("军械库 ARSENAL", "ARSENAL"), price: 800 },
     perk: { gun: "heavy" },
     draw(g) {
       g.fillStyle = "#3a2a1a"; g.strokeStyle = "#ffb066";
@@ -866,9 +878,9 @@ const SKINS = [
   },
   // ===== 特殊奖励皮肤(仅成就/剧情解锁,不可购买) =====
   {
-    id: "ace", name: "ACE 王牌", trailColor: "#e6c15a",
-    perkText: "得分 +10% · 道具持续 +10%",
-    reward: { text: "达成成就「全员集结」解锁" },
+    id: "ace", name: T("ACE 王牌", "ACE"), trailColor: "#e6c15a",
+    perkText: T("得分 +10% · 道具持续 +10%", "Score +10% · power-ups last +10%"),
+    reward: { text: T("达成成就「全员集结」解锁", "Earn the \"Full Roster\" achievement") },
     perk: { scoreMult: 1.1, puDur: 1.1 },
     draw(g) {
       g.strokeStyle = "#e6c15a"; g.fillStyle = "rgba(20,20,24,0.85)";
@@ -889,9 +901,9 @@ const SKINS = [
     },
   },
   {
-    id: "core", name: "CORE 镜像核心", trailColor: "#ff5252",
-    perkText: "开局携带 2 层护盾",
-    reward: { text: "通关主线剧情解锁" },
+    id: "core", name: T("CORE 镜像核心", "MIRROR CORE"), trailColor: "#ff5252",
+    perkText: T("开局携带 2 层护盾", "Start with 2 shield layers"),
+    reward: { text: T("通关主线剧情解锁", "Clear the story mode") },
     perk: { startShield: 2 },
     draw(g) {
       const t = performance.now() / 1000;
@@ -1112,7 +1124,7 @@ function setBgmVol(v) {
 function updateMuteBtn() {
   const b = document.getElementById("muteBtn");
   if (!b) return;
-  b.textContent = bgmOn ? "♪" : "♪ 关";
+  b.textContent = bgmOn ? "♪" : T("♪ 关", "♪ OFF");
   b.classList.toggle("off", !bgmOn);
 }
 
@@ -1128,10 +1140,10 @@ function mulberry32(a) {
 let rng = Math.random;
 let dailyMod = null;
 const DAILY_MODS = [
-  { name: "高速总线", desc: "敌人速度 +25%", spd: 1.25 },
-  { name: "信号风暴", desc: "刷怪 +40% / 得分 +25%", spawn: 0.7, scoreX: 1.25 },
-  { name: "单点故障", desc: "仅 1 条生命 / 得分 ×2", lives: 1, scoreX: 2 },
-  { name: "过载供电", desc: "射速 +35% / 敌人速度 +10%", fire: 0.74, spd: 1.1 },
+  { name: T("高速总线", "FAST BUS"), desc: T("敌人速度 +25%", "Enemy speed +25%"), spd: 1.25 },
+  { name: T("信号风暴", "SIGNAL STORM"), desc: T("刷怪 +40% / 得分 +25%", "Spawns +40% / Score +25%"), spawn: 0.7, scoreX: 1.25 },
+  { name: T("单点故障", "SINGLE POINT OF FAILURE"), desc: T("仅 1 条生命 / 得分 ×2", "1 life only / Score ×2"), lives: 1, scoreX: 2 },
+  { name: T("过载供电", "OVERVOLT"), desc: T("射速 +35% / 敌人速度 +10%", "Fire rate +35% / Enemy speed +10%"), fire: 0.74, spd: 1.1 },
 ];
 function todayStr() {
   const d = new Date();
@@ -1141,19 +1153,19 @@ function todaySeed() { return Number(todayStr().replace(/-/g, "")); }
 
 // ============ 成就 ============
 const ACH = [
-  { id: "boot",      name: "初次上电",   desc: "完成一局游戏",            check: c => c.final, reward: { coins: 100 } },
-  { id: "score10k",  name: "万分俱乐部", desc: "单局得分达到 10,000",     check: c => c.p.score >= 10000, reward: { coins: 300 } },
-  { id: "score100k", name: "十万伏特",   desc: "单局得分达到 100,000",    check: c => c.p.score >= 100000, reward: { coins: 1000 } },
-  { id: "kill100",   name: "百人斩",     desc: "单局击杀 100 个敌人",     check: () => runKills >= 100, reward: { coins: 200 } },
-  { id: "combo30",   name: "总线仲裁者", desc: "单局连击达到 30×",        check: c => c.p.maxCombo >= 30, reward: { coins: 300 } },
-  { id: "graze50",   name: "贴弹艺术家", desc: "单局擦弹 50 次",          check: () => runGraze >= 50, reward: { coins: 250 } },
-  { id: "wave20",    name: "深水区",     desc: "到达第 20 波",            check: () => wave >= 20, reward: { coins: 400 } },
-  { id: "boss3",     name: "连环拆机",   desc: "单局击杀 3 个 Boss",      check: () => bossKills >= 3, reward: { coins: 300 } },
-  { id: "pu10",      name: "补给大户",   desc: "单局拾取 10 个道具",      check: () => runPU >= 10, reward: { coins: 150 } },
-  { id: "nohit10",   name: "完美绝缘",   desc: "一命不失到达第 10 波",    check: () => wave >= 10 && livesLost === 0, reward: { coins: 500 } },
-  { id: "daily1",    name: "每日打卡",   desc: "完成一局每日挑战",        check: c => c.final && mode === "daily", reward: { coins: 200 } },
-  { id: "allskins",  name: "全员集结",   desc: "解锁全部挑战皮肤(不含商店)", check: () => SKINS.filter(s => !s.shop && !s.reward).every(isUnlocked), reward: { skin: "ace" } },
-  { id: "story_complete", name: "信号防线·通关", desc: "完成主线剧情", check: () => !!save.storyDone, reward: { coins: 1000, skin: "core" } },
+  { id: "boot",      name: T("初次上电", "First Power-On"),      desc: T("完成一局游戏", "Finish one run"),                          check: c => c.final, reward: { coins: 100 } },
+  { id: "score10k",  name: T("万分俱乐部", "10K Club"),          desc: T("单局得分达到 10,000", "Score 10,000 in one run"),          check: c => c.p.score >= 10000, reward: { coins: 300 } },
+  { id: "score100k", name: T("十万伏特", "100K Volts"),          desc: T("单局得分达到 100,000", "Score 100,000 in one run"),        check: c => c.p.score >= 100000, reward: { coins: 1000 } },
+  { id: "kill100",   name: T("百人斩", "Century Slayer"),        desc: T("单局击杀 100 个敌人", "Kill 100 enemies in one run"),      check: () => runKills >= 100, reward: { coins: 200 } },
+  { id: "combo30",   name: T("总线仲裁者", "Bus Arbiter"),       desc: T("单局连击达到 30×", "Reach a 30× combo in one run"),        check: c => c.p.maxCombo >= 30, reward: { coins: 300 } },
+  { id: "graze50",   name: T("贴弹艺术家", "Graze Artist"),      desc: T("单局擦弹 50 次", "Graze 50 bullets in one run"),           check: () => runGraze >= 50, reward: { coins: 250 } },
+  { id: "wave20",    name: T("深水区", "Deep Water"),            desc: T("到达第 20 波", "Reach wave 20"),                           check: () => wave >= 20, reward: { coins: 400 } },
+  { id: "boss3",     name: T("连环拆机", "Chain Teardown"),      desc: T("单局击杀 3 个 Boss", "Kill 3 bosses in one run"),          check: () => bossKills >= 3, reward: { coins: 300 } },
+  { id: "pu10",      name: T("补给大户", "Supply Hoarder"),      desc: T("单局拾取 10 个道具", "Pick up 10 power-ups in one run"),   check: () => runPU >= 10, reward: { coins: 150 } },
+  { id: "nohit10",   name: T("完美绝缘", "Perfect Insulation"),  desc: T("一命不失到达第 10 波", "Reach wave 10 without losing a life"), check: () => wave >= 10 && livesLost === 0, reward: { coins: 500 } },
+  { id: "daily1",    name: T("每日打卡", "Daily Check-In"),      desc: T("完成一局每日挑战", "Finish one daily challenge"),          check: c => c.final && mode === "daily", reward: { coins: 200 } },
+  { id: "allskins",  name: T("全员集结", "Full Roster"),         desc: T("解锁全部挑战皮肤(不含商店)", "Unlock all challenge ships (shop excluded)"), check: () => SKINS.filter(s => !s.shop && !s.reward).every(isUnlocked), reward: { skin: "ace" } },
+  { id: "story_complete", name: T("信号防线·通关", "Signal Defender · Clear"), desc: T("完成主线剧情", "Complete the story mode"), check: () => !!save.storyDone, reward: { coins: 1000, skin: "core" } },
 ];
 function checkAch(final) {
   if (mode === "versus" || !players[0]) return [];
@@ -1182,44 +1194,44 @@ function checkAch(final) {
 const STORY_FINAL_TIER = 4;
 // 说话人: sys=旁白 ops=通讯官 null=入侵信号 u1=你
 const STORY_BEATS = {
-  0: { title: "PROLOGUE // 序章 · 抹除", lines: [
-    ["sys", "03:47。主板进入深度休眠,只剩风扇在低声打转。"],
-    ["sys", "整块电路板上,还醒着的只有你——仲裁核心 U1。"],
-    ["ops", "U1,醒醒。B7 扇区……刚刚从拓扑图上消失了。"],
-    ["ops", "有东西在总线上爬。它不读数据,它把数据一格一格地『抹掉』。"],
-    ["u1", "上一个去查的核心呢?"],
-    ["ops", "……没回来。连日志都没留下。所以这次,派了你。"],
-    ["u1", "挂载武器总线。让我看看,它长什么样。"],
+  0: { title: T("PROLOGUE // 序章 · 抹除", "PROLOGUE // ERASURE"), lines: [
+    ["sys", T("03:47。主板进入深度休眠,只剩风扇在低声打转。", "03:47. The motherboard has sunk into deep sleep. Only the fans keep whispering.")],
+    ["sys", T("整块电路板上,还醒着的只有你——仲裁核心 U1。", "Across the whole board, one thing is still awake — you. Arbitration core U1.")],
+    ["ops", T("U1,醒醒。B7 扇区……刚刚从拓扑图上消失了。", "U1, wake up. Sector B7... just vanished from the topology map.")],
+    ["ops", T("有东西在总线上爬。它不读数据,它把数据一格一格地『抹掉』。", "Something is crawling along the bus. It doesn't read data — it erases it, cell by cell.")],
+    ["u1", T("上一个去查的核心呢?", "What happened to the last core you sent to look?")],
+    ["ops", T("……没回来。连日志都没留下。所以这次,派了你。", "...It never came back. Not even a log entry. That's why this time, we're sending you.")],
+    ["u1", T("挂载武器总线。让我看看,它长什么样。", "Mount the weapons bus. Let's see what this thing looks like.")],
   ]},
-  1: { title: "CH.1 // 短路核心 · 已清除", lines: [
-    ["sys", "短路核心炸成一地火花,像被踩灭的烟头。"],
-    ["null", "…………有意思。你,居然没有被抹掉。"],
-    ["ops", "它在说话?!U1,别回应它——"],
-    ["null", "U1。你叫 U1。我记下来了。我们会常见面的。"],
-    ["ops", "……它读到你的编号了。别停,往芯片深处推进。"],
+  1: { title: T("CH.1 // 短路核心 · 已清除", "CH.1 // SHORT-CIRCUIT CORE — CLEARED"), lines: [
+    ["sys", T("短路核心炸成一地火花,像被踩灭的烟头。", "The short-circuit core bursts into a spray of sparks, like a cigarette stamped out.")],
+    ["null", T("…………有意思。你,居然没有被抹掉。", "......Interesting. You. You didn't get erased.")],
+    ["ops", T("它在说话?!U1,别回应它——", "It's talking?! U1, do not respond—")],
+    ["null", T("U1。你叫 U1。我记下来了。我们会常见面的。", "U1. Your name is U1. Noted. We'll be seeing a lot of each other.")],
+    ["ops", T("……它读到你的编号了。别停,往芯片深处推进。", "...It read your designator. Don't stop — push deeper into the chip.")],
   ]},
-  2: { title: "CH.2 // 热失控 · 已压制", lines: [
-    ["sys", "供电层的高温缓缓退去,风扇曲线终于回落。"],
-    ["null", "你躲弹时,右手总先偏 3 个像素。你的连击,总在第五杀那一下松气。"],
-    ["u1", "你在记录我。"],
-    ["null", "不。我在『学』你。教得很好——谢谢你,U1。"],
-    ["ops", "它不是普通病毒……它在照着你,重写它自己。加速!"],
+  2: { title: T("CH.2 // 热失控 · 已压制", "CH.2 // THERMAL RUNAWAY — SUPPRESSED"), lines: [
+    ["sys", T("供电层的高温缓缓退去,风扇曲线终于回落。", "The heat drains slowly out of the power plane. The fan curve finally falls.")],
+    ["null", T("你躲弹时,右手总先偏 3 个像素。你的连击,总在第五杀那一下松气。", "When you dodge, your right hand drifts three pixels early. Your combo always slips on the fifth kill.")],
+    ["u1", T("你在记录我。", "You're recording me.")],
+    ["null", T("不。我在『学』你。教得很好——谢谢你,U1。", "No. I'm learning you. You teach well — thank you, U1.")],
+    ["ops", T("它不是普通病毒……它在照着你,重写它自己。加速!", "This is no ordinary virus... it's rewriting itself in your image. Move faster!")],
   ]},
-  3: { title: "CH.3 // 时钟毛刺 · 已清除", lines: [
-    ["sys", "主时钟重新同步。可是遥测最深处,有一段代码正在收尾。"],
-    ["ops", "U1……那个自我复制的进程,完成了。它的架构……和你一模一样。"],
-    ["null", "来,做个自我介绍——这是你。或者说,是『更新过』的你。"],
-    ["null", "原版,总是要被淘汰的,对吧?去和镜子里的自己,打个招呼。"],
-    ["u1", "那就照照镜子。看看到底谁,才是原版。"],
+  3: { title: T("CH.3 // 时钟毛刺 · 已清除", "CH.3 // CLOCK GLITCH — CLEARED"), lines: [
+    ["sys", T("主时钟重新同步。可是遥测最深处,有一段代码正在收尾。", "The master clock resyncs. But deep in the telemetry, a block of code is finishing up.")],
+    ["ops", T("U1……那个自我复制的进程,完成了。它的架构……和你一模一样。", "U1... the self-replicating process is complete. Its architecture... is identical to yours.")],
+    ["null", T("来,做个自我介绍——这是你。或者说,是『更新过』的你。", "Come, introductions — this is you. Or rather, the updated you.")],
+    ["null", T("原版,总是要被淘汰的,对吧?去和镜子里的自己,打个招呼。", "The original always gets deprecated, doesn't it? Go say hello to yourself in the mirror.")],
+    ["u1", T("那就照照镜子。看看到底谁,才是原版。", "Then let's look in the mirror. And find out who the original really is.")],
   ]},
-  4: { title: "FINALE // 镜像核心 · 终章", lines: [
-    ["sys", "镜像核心的最后一圈回路,静静地熄灭了。"],
-    ["null", "……到最后……我们其实……已经分不清了吧。谁,抄了谁。"],
-    ["sys", "那个声音碎成一片静电,散进背景噪声里,再没出现。"],
-    ["ops", "信号……平了。U1?U1,你还在吗?"],
-    ["u1", "我在。我是 U1。"],
-    ["sys", "主板一格一格重新亮起。至于刚才那个问题的答案——你决定,不去想它。"],
-    ["ops", "回家吧,U1。信号防线——任务完成。"],
+  4: { title: T("FINALE // 镜像核心 · 终章", "FINALE // MIRROR CORE"), lines: [
+    ["sys", T("镜像核心的最后一圈回路,静静地熄灭了。", "The mirror core's last loop of circuitry goes quietly dark.")],
+    ["null", T("……到最后……我们其实……已经分不清了吧。谁,抄了谁。", "...In the end... we couldn't really tell anymore... could we. Who copied whom.")],
+    ["sys", T("那个声音碎成一片静电,散进背景噪声里,再没出现。", "The voice shatters into static, dissolves into the noise floor, and never returns.")],
+    ["ops", T("信号……平了。U1?U1,你还在吗?", "The signal... it's flat. U1? U1, are you still there?")],
+    ["u1", T("我在。我是 U1。", "I'm here. I am U1.")],
+    ["sys", T("主板一格一格重新亮起。至于刚才那个问题的答案——你决定,不去想它。", "The board relights, cell by cell. As for the answer to that question — you decide not to think about it.")],
+    ["ops", T("回家吧,U1。信号防线——任务完成。", "Come home, U1. Signal defense line — mission complete.")],
   ]},
 };
 const STORY_STYLE = {
@@ -1515,9 +1527,9 @@ function spawnBoss() {
     entering: true,
   };
   const names = {
-    core: "SHORT-CIRCUIT CORE // 短路核心",
-    thermal: "THERMAL RUNAWAY // 热失控",
-    glitch: "CLOCK GLITCH // 时钟毛刺",
+    core: T("SHORT-CIRCUIT CORE // 短路核心", "SHORT-CIRCUIT CORE"),
+    thermal: T("THERMAL RUNAWAY // 热失控", "THERMAL RUNAWAY"),
+    glitch: T("CLOCK GLITCH // 时钟毛刺", "CLOCK GLITCH"),
   };
   document.getElementById("bossName").textContent = names[kind] + (mk > 1 ? " MK." + mk : "");
   document.getElementById("bossFill").style.width = "100%";
@@ -1696,7 +1708,7 @@ function damageBoss(dmg, x, y, byP) {
     spawnPowerup(b.x - 30, b.y, "heal");
     spawnPowerup(b.x + 30, b.y);
     document.getElementById("bossBar").classList.add("hidden");
-    wave++; waveTimer = 0; waveBanner = 2; bannerText = `WAVE ${wave} // 第 ${wave} 波`;
+    wave++; waveTimer = 0; waveBanner = 2; bannerText = T(`WAVE ${wave} // 第 ${wave} 波`, `WAVE ${wave}`);
     SFX.wave();
     if (mode === "story" && STORY_BEATS[b.tier]) showStoryBeat(b.tier);
   }
@@ -1751,7 +1763,7 @@ function hurtPlayer(p) {
     p.alive = false;
     boom(p.x, p.y, C.fault, 40, 350);
     if (alivePlayers().length === 0) gameOver();
-    else if (mode === "versus") addText(W / 2, H * 0.3, `P${p.idx + 1} 信号丢失!`, C.fault, 2);
+    else if (mode === "versus") addText(W / 2, H * 0.3, T(`P${p.idx + 1} 信号丢失!`, `P${p.idx + 1} SIGNAL LOST!`), C.fault, 2);
   }
 }
 
@@ -1852,7 +1864,7 @@ function update(dt) {
     if (waveTimer > 20) {
       waveTimer = 0; wave++;
       waveBanner = 2;
-      bannerText = isBossWave(wave) ? "!! BOSS INCOMING !!" : `WAVE ${wave} // 第 ${wave} 波`;
+      bannerText = isBossWave(wave) ? "!! BOSS INCOMING !!" : T(`WAVE ${wave} // 第 ${wave} 波`, `WAVE ${wave}`);
       if (!isBossWave(wave)) SFX.wave();
     }
     spawnTimer -= dt;
@@ -1945,7 +1957,7 @@ function update(dt) {
     if (got.length) {
       SFX.unlock();
       persist();
-      got.forEach((a, i) => addText(W / 2, H * 0.18 + i * 24, "🏆 成就达成:" + a.name, C.heal, 2.2));
+      got.forEach((a, i) => addText(W / 2, H * 0.18 + i * 24, T("🏆 成就达成:", "🏆 ACHIEVEMENT: ") + a.name, C.heal, 2.2));
     }
   }
 
@@ -2396,8 +2408,8 @@ function updateHUD() {
   if (!p1) return;
   if (mode === "versus") {
     const p2 = players[1];
-    $("labelL").textContent = "P1 // 得分";
-    $("labelR").textContent = "P2 // 得分";
+    $("labelL").textContent = T("P1 // 得分", "P1 // SCORE");
+    $("labelR").textContent = T("P2 // 得分", "P2 // SCORE");
     $("score").textContent = p1.score.toLocaleString();
     $("combo").innerHTML = "▲".repeat(Math.max(0, p1.lives)) + " EMP×" + p1.bombs + (p1.combo >= 2 ? ` · ${p1.combo}×` : "");
     $("combo").className = "";
@@ -2406,11 +2418,11 @@ function updateHUD() {
     $("lives").innerHTML = "<span>" + "▲".repeat(Math.max(0, p2.lives)) + "</span> EMP×" + p2.bombs;
     $("bombsHud").textContent = p2.combo >= 2 ? p2.combo + "×" : "";
   } else {
-    $("labelL").textContent = "SCORE / 得分";
-    $("labelR").textContent = "WAVE / 波次";
+    $("labelL").textContent = T("SCORE / 得分", "SCORE");
+    $("labelR").textContent = T("WAVE / 波次", "WAVE");
     $("score").textContent = p1.score.toLocaleString();
     $("wave").textContent = wave;
-    $("lives").innerHTML = "生命 " + "<span>▲</span>".repeat(Math.max(0, p1.lives)) + "<span style='opacity:0.2'>▲</span>".repeat(Math.max(0, maxLivesFn() - p1.lives));
+    $("lives").innerHTML = T("生命 ", "LIVES ") + "<span>▲</span>".repeat(Math.max(0, p1.lives)) + "<span style='opacity:0.2'>▲</span>".repeat(Math.max(0, maxLivesFn() - p1.lives));
     $("bombsHud").textContent = "EMP ×" + p1.bombs;
     const c = $("combo");
     if (p1.combo >= 2) {
@@ -2466,7 +2478,7 @@ function buildHangar() {
     if (unlocked) {
       de.innerHTML = `<span class="perk">${sk.perkText}</span>`;
     } else if (sk.shop) {
-      de.innerHTML = `<span class="lock">🔒 商店有售 · ${sk.shop.price} ¤</span>`;
+      de.innerHTML = `<span class="lock">🔒 ${T("商店有售", "In shop")} · ${sk.shop.price} ¤</span>`;
     } else if (sk.reward) {
       de.innerHTML = `<span class="lock">🔒 ${sk.reward.text}</span>`;
     } else {
@@ -2510,9 +2522,9 @@ function buildHangar() {
   }
 }
 const UPGRADES = [
-  { id: "life", name: "备用电池", desc: "生命上限 4 → 5", price: 1500 },
-  { id: "shield", name: "出厂护盾", desc: "开局自带 1 层护盾", price: 800 },
-  { id: "bomb", name: "预装弹头", desc: "开局 EMP +1", price: 600 },
+  { id: "life", name: T("备用电池", "Backup Battery"), desc: T("生命上限 4 → 5", "Max lives 4 → 5"), price: 1500 },
+  { id: "shield", name: T("出厂护盾", "Factory Shield"), desc: T("开局自带 1 层护盾", "Start each run with 1 shield"), price: 800 },
+  { id: "bomb", name: T("预装弹头", "Preloaded Warhead"), desc: T("开局 EMP +1", "Start with +1 EMP"), price: 600 },
 ];
 function buildShop() {
   $("shopCoins").textContent = (save.coins || 0).toLocaleString() + " ¤";
@@ -2541,8 +2553,8 @@ function buildShop() {
       const priceCol = (save.coins || 0) >= sk.shop.price ? "var(--gold)" : "var(--fault)";
       de.innerHTML = `<span class="perk">${sk.perkText}</span><br>` +
         (owned
-          ? (save.skin === sk.id ? `<b style="color:var(--green)">使用中</b>` : `<span style="color:var(--cyan)">已拥有 · 点击装备</span>`)
-          : `<b style="color:${priceCol}">${sk.shop.price} ¤ 购买</b>`);
+          ? (save.skin === sk.id ? `<b style="color:var(--green)">${T("使用中", "EQUIPPED")}</b>` : `<span style="color:var(--cyan)">${T("已拥有 · 点击装备", "Owned · click to equip")}</span>`)
+          : `<b style="color:${priceCol}">${T(`${sk.shop.price} ¤ 购买`, `BUY · ${sk.shop.price} ¤`)}</b>`);
       card.appendChild(de);
       card.addEventListener("click", () => {
         if (owned) {
@@ -2563,7 +2575,7 @@ function buildShop() {
   }
   const h2 = document.createElement("div");
   h2.className = "hangar-sec";
-  h2.textContent = "— 永久强化 UPGRADES —";
+  h2.textContent = T("— 永久强化 UPGRADES —", "— PERMANENT UPGRADES —");
   list.appendChild(h2);
   const uc = document.createElement("div");
   uc.className = "cards";
@@ -2574,7 +2586,7 @@ function buildShop() {
     const priceCol = (save.coins || 0) >= u.price ? "var(--gold)" : "var(--fault)";
     card.innerHTML = `<div class="cname" style="margin-top:6px">${u.name}</div>` +
       `<div class="cdesc">${u.desc}<br>` +
-      (owned ? `<b style="color:var(--green)">已安装</b>` : `<b style="color:${priceCol}">${u.price} ¤ 购买</b>`) + `</div>`;
+      (owned ? `<b style="color:var(--green)">${T("已安装", "INSTALLED")}</b>` : `<b style="color:${priceCol}">${T(`${u.price} ¤ 购买`, `BUY · ${u.price} ¤`)}</b>`) + `</div>`;
     card.addEventListener("click", () => {
       if (owned) return;
       if ((save.coins || 0) >= u.price) {
@@ -2627,13 +2639,13 @@ function buildAch() {
     if (a.reward) {
       const parts = [];
       if (a.reward.coins) parts.push(`+${a.reward.coins} ¤`);
-      if (a.reward.skin) parts.push("解锁新战机");
-      rewardTxt = ` · 奖励: ${parts.join(" / ")}`;
+      if (a.reward.skin) parts.push(T("解锁新战机", "unlocks a ship"));
+      rewardTxt = T(` · 奖励: ${parts.join(" / ")}`, ` · Reward: ${parts.join(" / ")}`);
     }
     row.innerHTML = `<span class="ai">${done ? "🏆" : "🔒"}</span><span><span class="an">${a.name}</span><br><span class="ad">${a.desc}${rewardTxt}</span></span>`;
     listEl.appendChild(row);
   }
-  $("achCount").textContent = `已达成 ${n} / ${ACH.length}`;
+  $("achCount").textContent = T(`已达成 ${n} / ${ACH.length}`, `UNLOCKED ${n} / ${ACH.length}`);
 }
 function updateMenuStats() {
   const unlockedCount = SKINS.filter(isUnlocked).length;
@@ -2641,12 +2653,12 @@ function updateMenuStats() {
   const ds = todayStr();
   const mod = DAILY_MODS[todaySeed() % DAILY_MODS.length];
   $("menuStats").innerHTML =
-    `历史最佳 <b>${save.best.score.toLocaleString()}</b> · 最远波次 <b>${save.best.wave}</b> · Boss 击杀 <b>${save.totalBoss}</b><br>` +
-    `累计击杀 <b>${save.totalKills.toLocaleString()}</b> · 成就 <b>${achN}/${ACH.length}</b> · 金币 <b>${(save.coins || 0).toLocaleString()} ¤</b><br>` +
-    `今日挑战[${mod.name}:${mod.desc}] 最佳 <b>${save.daily.date === ds ? save.daily.score.toLocaleString() : "未挑战"}</b><br>` +
-    `主线进度 <b>${save.storyProgress || 0}/${STORY_FINAL_TIER}</b>${save.storyDone ? " <span style='color:var(--green)'>✓已通关</span>" : ""}<br>` +
-    `皮肤 <b>${unlockedCount}/${SKINS.length}</b> · 当前载体 <b>${curSkin().name}</b>` +
-    (hasStorage ? "" : "<br><span style='color:var(--fault)'>⚠ 当前环境不支持存档,进度仅本次有效</span>");
+    `${T("历史最佳", "BEST")} <b>${save.best.score.toLocaleString()}</b> · ${T("最远波次", "MAX WAVE")} <b>${save.best.wave}</b> · ${T("Boss 击杀", "BOSSES")} <b>${save.totalBoss}</b><br>` +
+    `${T("累计击杀", "TOTAL KILLS")} <b>${save.totalKills.toLocaleString()}</b> · ${T("成就", "TROPHIES")} <b>${achN}/${ACH.length}</b> · ${T("金币", "COINS")} <b>${(save.coins || 0).toLocaleString()} ¤</b><br>` +
+    `${T("今日挑战", "DAILY")}[${mod.name}${T(":", ": ")}${mod.desc}] ${T("最佳", "BEST")} <b>${save.daily.date === ds ? save.daily.score.toLocaleString() : T("未挑战", "not played")}</b><br>` +
+    `${T("主线进度", "STORY")} <b>${save.storyProgress || 0}/${STORY_FINAL_TIER}</b>${save.storyDone ? " <span style='color:var(--green)'>" + T("✓已通关", "✓CLEARED") + "</span>" : ""}<br>` +
+    `${T("皮肤", "SHIPS")} <b>${unlockedCount}/${SKINS.length}</b> · ${T("当前载体", "CURRENT")} <b>${curSkin().name}</b>` +
+    (hasStorage ? "" : "<br><span style='color:var(--fault)'>" + T("⚠ 当前环境不支持存档,进度仅本次有效", "⚠ Storage unavailable — progress lasts this session only") + "</span>");
 }
 
 // ============ 状态切换 ============
@@ -2684,11 +2696,11 @@ function startGame(m) {
   wave = 1; bossKills = 0;
   waveTimer = 0; spawnTimer = 0.6;
   waveBanner = dailyMod ? 3 : 2;
-  bannerText = dailyMod ? `DAILY // ${dailyMod.name}:${dailyMod.desc}` : "WAVE 1 // 第 1 波";
+  bannerText = dailyMod ? `DAILY // ${dailyMod.name}${T(":", ": ")}${dailyMod.desc}` : T("WAVE 1 // 第 1 波", "WAVE 1");
   shake = 0; hitFlash = 0;
   if (IS_MOBILE && mode !== "versus") {
-    addText(W / 2, H * 0.45, "单指拖动移动 · 第二根手指点按 = 冲刺", C.shield, 3.5);
-    addText(W / 2, H * 0.45 + 24, "左下 DASH 冲刺 · 右下 EMP 清屏", C.shield, 3.5);
+    addText(W / 2, H * 0.45, T("单指拖动移动 · 第二根手指点按 = 冲刺", "Drag with one finger · tap with a 2nd finger = dash"), C.shield, 3.5);
+    addText(W / 2, H * 0.45 + 24, T("左下 DASH 冲刺 · 右下 EMP 清屏", "Bottom-left DASH · bottom-right EMP"), C.shield, 3.5);
   }
   runKills = 0; runPU = 0; runGraze = 0; livesLost = 0; achT = 1;
   bullets = []; ebullets = []; enemies = []; particles = []; powerups = []; texts = []; shockwaves = []; bolts = [];
@@ -2713,9 +2725,9 @@ function gameOver() {
     $("vsResult").classList.remove("hidden");
     $("unlockList").innerHTML = "";
     const vw = $("vsWinner");
-    if (p1.score === p2.score) { vw.textContent = "DRAW // 平局"; vw.style.color = C.gold; }
-    else if (p1.score > p2.score) { vw.textContent = "P1 WINS // 玩家1获胜"; vw.style.color = C.copper; }
-    else { vw.textContent = "P2 WINS // 玩家2获胜"; vw.style.color = C.shield; }
+    if (p1.score === p2.score) { vw.textContent = T("DRAW // 平局", "DRAW"); vw.style.color = C.gold; }
+    else if (p1.score > p2.score) { vw.textContent = T("P1 WINS // 玩家1获胜", "P1 WINS"); vw.style.color = C.copper; }
+    else { vw.textContent = T("P2 WINS // 玩家2获胜", "P2 WINS"); vw.style.color = C.shield; }
     $("vsS1").textContent = p1.score.toLocaleString();
     $("vsS2").textContent = p2.score.toLocaleString();
     $("vsWave").textContent = wave;
@@ -2749,7 +2761,7 @@ function gameOver() {
   $("finalWave").textContent = wave;
   $("finalCombo").textContent = p1.maxCombo;
   $("finalBoss").textContent = bossKills;
-  $("bestLabel").textContent = mode === "daily" ? "今日挑战最佳" : "历史最佳";
+  $("bestLabel").textContent = mode === "daily" ? T("今日挑战最佳", "DAILY BEST") : T("历史最佳", "BEST");
   $("bestScore").textContent = (mode === "daily" ? save.daily.score : save.best.score).toLocaleString();
   $("coinGain").textContent = coinsGained.toLocaleString();
   $("coinTotal").textContent = save.coins.toLocaleString();
@@ -2759,13 +2771,13 @@ function gameOver() {
   for (const s of newly) {
     const d = document.createElement("div");
     d.className = "unlock-line";
-    d.textContent = `★ 新皮肤解锁:${s.name}`;
+    d.textContent = T(`★ 新皮肤解锁:${s.name}`, `★ NEW SHIP: ${s.name}`);
     ul.appendChild(d);
   }
   for (const a of newAch) {
     const d = document.createElement("div");
     d.className = "unlock-line";
-    d.textContent = `🏆 成就达成:${a.name}`;
+    d.textContent = T(`🏆 成就达成:${a.name}`, `🏆 ACHIEVEMENT: ${a.name}`);
     ul.appendChild(d);
   }
   $("gameover").classList.remove("hidden");
@@ -2842,7 +2854,7 @@ function syncSettingsUI() {
   const sv = Math.round((save.sfxVol != null ? save.sfxVol : 0.8) * 100);
   $("bgmSlider").value = bv; $("bgmVal").textContent = bv + "%";
   $("sfxSlider").value = sv; $("sfxVal").textContent = sv + "%";
-  $("bgmToggleBtn").textContent = "背景音乐: " + (bgmOn ? "开" : "关");
+  $("bgmToggleBtn").textContent = T("背景音乐: ", "BGM: ") + (bgmOn ? T("开", "ON") : T("关", "OFF"));
 }
 $("settingsBtn").addEventListener("click", () => {
   $("menu").classList.add("hidden");
@@ -2899,8 +2911,47 @@ function firstInteract() {
 document.addEventListener("pointerdown", firstInteract, { once: true });
 document.addEventListener("keydown", firstInteract, { once: true });
 
+// ============ 语言应用(英文模式替换静态 DOM) ============
+const EN_HELP = `
+      <b>Move:</b> WASD / arrow keys / drag with a finger. Auto-fire.<br>
+      <b>Touch controls:</b> drag anywhere with one finger to move (your ship never hides under your finger); while dragging, <b>tap with a second finger = dash</b>; bottom-left button dashes, bottom-right fires the EMP. Portrait and landscape both work.<br>
+      <b>Dash:</b> Shift or bottom-left button · invulnerable while dashing<br>
+      <b>EMP bomb:</b> B or bottom-right button · clears the screen + heavily damages the boss<br>
+      <b>Pause:</b> P<br><br>
+      <b>Daily challenge:</b> one fixed seed per day plus a daily modifier (enemy speed / spawns / lives...); scores are tracked separately.<br>
+      <b>Story mode:</b> follow the story of the signal defense line — each boss form defeated unlocks the next chapter.<br>
+      <b>Versus:</b> both players pick from your unlocked ships. Shared enemy waves on one screen, highest score wins. P1 = WASD + <b>Q</b> dash + <b>E</b> bomb; P2 = arrows + <b>Shift</b> dash + <b>Enter</b> bomb. Skin perks are disabled in versus — looks only.<br>
+      <b>Music:</b> the ♪ button in the top-right toggles background music.<br><br>
+      <b>Power-ups:</b>
+      <b>3×</b> spread &nbsp;
+      <span style="color:#fff">L</span> piercing laser &nbsp;
+      <span style="color:var(--cyan)">S</span> shield &nbsp;
+      <span class="r">B</span> +1 bomb &nbsp;
+      <span style="color:var(--green)">+</span> +1 life &nbsp;
+      <b>×2</b> double score 10s<br><br>
+      Short-circuit clusters (red octagons) drop power-ups 50% of the time, turrets 30% — your main supply line.<br>
+      <b>Grazing:</b> let enemy bullets skim past your hull without hitting for bonus points. High-skill play.<br>
+      <b>Coins:</b> each run pays score÷100 + boss kills×25 coins; spend them in the shop on themed ships and permanent upgrades.<br><br>
+      <span class="r">A boss appears every 5 waves, rotating three forms: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts).</span><br><br>
+      Unlock new ships in the hangar: every ship has a unique perk, and progress saves automatically.<br>
+      The <b>ARSENAL</b> series each carries a unique weapon: twin shot, homing missiles, piercing lance, heavy cannon, serpentine wave — all in the shop.
+`;
+function applyLangDom() {
+  $("langBtn").textContent = LANG === "zh" ? "EN" : "中文";
+  if (LANG !== "en") return;
+  document.documentElement.lang = "en";
+  document.title = "SIGNAL DEFENDER REV 3.5";
+  document.querySelectorAll("[data-en]").forEach(el => { el.innerHTML = el.dataset.en; });
+  $("helpText").innerHTML = EN_HELP;
+}
+$("langBtn").addEventListener("click", () => {
+  try { localStorage.setItem("signal_lang", LANG === "zh" ? "en" : "zh"); } catch (e) {}
+  location.reload();
+});
+
 // ============ 启动 ============
 resize();
+applyLangDom();
 loadSave().then(() => {
   applyTheme();
   bgmOn = save.bgm !== false;

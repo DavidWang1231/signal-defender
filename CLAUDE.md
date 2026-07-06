@@ -1,6 +1,6 @@
 # SIGNAL // 信号防线 — 项目说明
 
-PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 3.4**。
+PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 3.5**。中英双语（面向国外求职展示，英文为对外默认）。
 
 ## 链接
 
@@ -19,6 +19,14 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 3. 版本号在两处: `<title>` 和主菜单 `.refdes`（格式 REV 3.x），大更新时同步 bump
 4. `git commit` + `git push` → Pages 约 1 分钟自动更新
 5. 大版本再打 tag + `gh release create`
+
+## i18n（REV 3.5 起）
+
+- 语言在 script 最顶部确定：`LANG`（localStorage 键 `signal_lang` > 浏览器语言，非中文默认英文），切换按钮 `#langBtn` 写入后 `location.reload()`
+- **JS 字符串**：`T(中文, English)` 辅助函数，数据结构（SKINS/ACH/STORY_BEATS/DAILY_MODS/UPGRADES/THEMES）定义时即翻译
+- **静态 HTML**：元素带 `data-en` 属性，英文模式启动时 `applyLangDom()` 批量替换 innerHTML；说明书整块替换为 JS 常量 `EN_HELP`
+- 新增任何用户可见文案必须同时提供中英两份（data-en 或 T()），否则英文模式会漏出中文
+- README 双语：`README.md` 英文为主，`README.zh-CN.md` 中文，顶部互链，改动需同步两份
 
 ## 代码结构速查（均在 index.html 的 script 内）
 

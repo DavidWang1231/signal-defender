@@ -1,51 +1,55 @@
-# SIGNAL // 信号防线
+# SIGNAL // Signal Defender
 
-> 一款 PCB 电路板美学的弹幕射击游戏 —— 全部代码在一个 HTML 文件里，零依赖，双击即玩。
+**English** | [中文](README.zh-CN.md)
 
-**🎮 在线试玩：[https://davidwang1231.github.io/signal-defender/](https://davidwang1231.github.io/signal-defender/)**
+> A PCB-aesthetic bullet-hell shooter that lives in a single HTML file — zero dependencies, no build step, double-click to play. Fully bilingual (EN / 中文).
 
-你是主板上仅存的仲裁核心 U1。深夜，一段陌生信号沿总线蔓延，吞噬相邻的逻辑门——启动防御协议，守住这块电路板。
+**🎮 Play online: [https://davidwang1231.github.io/signal-defender/](https://davidwang1231.github.io/signal-defender/)**
 
-## ✨ 特性
+You are U1, the last arbitration core still awake on the motherboard. Late one night, an unknown signal starts crawling along the bus, erasing the logic gates around it — bring the defense protocol online and hold the board.
 
-- **5 种游戏模式**：无尽模式 / 主线剧情（4 章悬疑故事）/ 每日挑战（全球统一种子 + 当日修饰词）/ 本机双人对战 / 成就收集
-- **18 架战机**：条件解锁、商店购买、成就奖励三种获取途径；军械库系列每架配独特武器（追踪导弹、贯穿弹、重炮、蛇形波动弹、双管）
-- **3 种 Boss 形态轮换**：短路核心（弹环+激光扫射）、热失控（螺旋弹幕）、时钟毛刺（瞬移爆发），每 5 波一战，多周目数值成长
-- **金币经济**：击杀得分换金币，商店购买主题皮肤（星战/运动/跑车系列）与永久强化
-- **合成音频**：背景音乐与全部音效由 Web Audio API 实时合成，Boss 战自动变奏；BGM/音效音量独立可调
-- **移动端自适应**：触屏设备自动切换手机操作（单指拖动 + 双指冲刺），横竖屏自由旋转，适配刘海屏
-- **擦弹系统**：敌弹贴身掠过得分，高手向操作
-- **进度持久化**：localStorage 存档，皮肤/成就/金币/剧情进度自动保存
+## ✨ Features
 
-## 🕹️ 操作
+- **5 game modes**: Endless / Story (a 4-chapter mystery campaign) / Daily Challenge (one global seed + a daily modifier) / local 2-player Versus / achievement hunting
+- **18 playable ships**: unlocked via challenges, shop purchases, or achievement rewards; each ARSENAL-series ship carries a unique weapon (homing missiles, piercing lance, heavy cannon, serpentine wave shot, twin shot)
+- **3 rotating boss forms**: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts) — one boss every 5 waves, scaling across cycles
+- **Coin economy**: score converts to coins; the shop sells themed ships (star / sport / supercar series) and permanent upgrades
+- **Synthesized audio**: background music and every sound effect are generated in real time with the Web Audio API — the BGM shifts automatically during boss fights; independent BGM/SFX volume controls
+- **i18n**: English / Chinese, auto-detected from the browser with an in-game toggle; the choice persists
+- **Mobile-friendly**: touch devices switch to one-finger drag + two-finger dash automatically; portrait and landscape both supported, notch-safe
+- **Graze system**: skim enemy bullets for bonus points — high-risk, high-skill play
+- **Persistent progress**: ships, achievements, coins, and story progress auto-save via localStorage
 
-| 平台 | 移动 | 冲刺（无敌帧） | EMP 炸弹 |
+## 🕹️ Controls
+
+| Platform | Move | Dash (i-frames) | EMP bomb |
 |---|---|---|---|
-| 电脑 | WASD / 方向键 | Shift | B |
-| 手机 | 单指拖动 | 第二根手指点按 / 左下按钮 | 右下按钮 |
-| 对战 P1 | WASD | Q | E |
-| 对战 P2 | 方向键 | Shift | Enter |
+| Desktop | WASD / arrows | Shift | B |
+| Mobile | one-finger drag | tap with a 2nd finger / bottom-left button | bottom-right button |
+| Versus P1 | WASD | Q | E |
+| Versus P2 | arrows | Shift | Enter |
 
-`P` 暂停 · 自动开火 · 右上角 ♪ 开关音乐
+`P` pauses · auto-fire · ♪ button (top-right) toggles music · language button (top-left)
 
-## 🚀 本地运行
+## 🚀 Run locally
 
-不需要构建、不需要安装：
+No build, no install:
 
 ```bash
-# 方式一:直接用浏览器打开
+# option 1: open directly in a browser
 open index.html
 
-# 方式二:起个本地服务器(手机同 Wi-Fi 可访问)
+# option 2: serve it (playable from a phone on the same Wi-Fi)
 python3 -m http.server 8000
 ```
 
-## 🛠️ 技术
+## 🛠️ Tech
 
-- 单文件 HTML + 原生 JavaScript，无任何框架和外部资源（118 KB）
-- Canvas 2D 渲染：全部飞船 / Boss / 特效均为程序化绘制，无图片素材
-- Web Audio API：振荡器合成音效 + 程序化循环 BGM（独立增益节点分路控制）
-- 每日挑战使用 mulberry32 种子随机数，同一天全球玩家面对相同的敌潮序列
+- Single-file HTML + vanilla JavaScript — no frameworks, no external assets (~120 KB)
+- Canvas 2D rendering: every ship, boss, and effect is drawn procedurally; zero image files
+- Web Audio API: oscillator-synthesized SFX + procedurally looped BGM on independent gain chains
+- Daily Challenge uses a mulberry32 seeded RNG — every player worldwide faces the same enemy waves each day
+- i18n via a tiny `T(zh, en)` helper + `data-en` attributes; language resolves before any content renders
 
 ## 📄 License
 
