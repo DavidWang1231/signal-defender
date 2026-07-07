@@ -1,6 +1,6 @@
 # SIGNAL // 信号防线 — 项目说明
 
-PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 3.6**。中英双语（面向国外求职展示，英文为对外默认）。
+PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 3.7**。中英双语（面向国外求职展示，英文为对外默认）。
 
 ## 链接
 
@@ -39,7 +39,9 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 - `DAILY_MODS[]` + `mulberry32` — 每日挑战种子随机(日期字符串转种子)，只替换 gameplay 用的 `rng()`，视觉仍用 Math.random
 - `STORY_BEATS{}` — 主线剧情 4 章，角色: OPS(青)/NULL(红)/U1(金)，击败对应 Boss tier 触发
 - `players[]` — 多玩家结构(双人对战)，所有玩家状态挂在 player 对象上，没有全局 score/lives
-- 音频: `sfxGain`/`bgmMaster` 两条独立增益链，音量设置面板可调；BGM 为程序化合成循环
+- 音频: `sfxGain`/`bgmMaster` 两条独立增益链，音量设置面板可调；BGM 为程序化合成循环；`SKIN_BGM{}` 高级战机专属曲目(aurum/core/reaper/prism)，`bgmProfile()` 按 save.skin 每小节取，换机即换曲
+- 子弹视觉: `mkBullet` 默认色取 skin.trailColor(prism 彩虹)；`perk.bulletShape` 换弹形(aurum="star")；武器专属色(homing/pierce/heavy/wave)不受影响
+- 签到 UI: 主菜单 `#checkinCard` 卡片(7 菱形进度点)，`updateCheckinCard()` 随 updateMenuStats 刷新
 - 存档: localStorage 键 `signal_save_v3`，`save` 对象 Object.assign 合并保证旧档兼容
 - 移动端: `IS_MOBILE` 检测(pointer:coarse)，单指拖动+双指点按冲刺，`@media (pointer:coarse)` 样式块
 

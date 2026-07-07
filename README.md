@@ -15,7 +15,8 @@ You are U1, the last arbitration core still awake on the motherboard. Late one n
 - **3 rotating boss forms**: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts) — one boss every 5 waves, scaling across cycles
 - **Coin economy**: score converts to coins; the shop sells themed ships (star / sport / supercar series) and permanent upgrades
 - **Daily check-in**: opening the game checks you in automatically with growing coin rewards; a 7-day streak unlocks the hidden ship AURUM
-- **Synthesized audio**: background music and every sound effect are generated in real time with the Web Audio API — the BGM shifts automatically during boss fights; independent BGM/SFX volume controls
+- **Synthesized audio**: background music and every sound effect are generated in real time with the Web Audio API — the BGM shifts automatically during boss fights, and four elite ships (AURUM / MIRROR CORE / REAPER / PRISM) carry their own exclusive themes; independent BGM/SFX volume controls
+- **Per-ship bullet styling**: shots are tinted to match each hull — PRISM fires rainbow bullets, AURUM fires spinning gold stars
 - **i18n**: English / Chinese, auto-detected from the browser with an in-game toggle; the choice persists
 - **Mobile-friendly**: touch devices switch to one-finger drag + two-finger dash automatically; portrait and landscape both supported, notch-safe
 - **Graze system**: skim enemy bullets for bonus points — high-risk, high-skill play

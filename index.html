@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SIGNAL // 信号防线 REV 3.6</title>
+<title>SIGNAL // 信号防线 REV 3.7</title>
 <style>
   :root {
     --bg: #06231a;
@@ -79,6 +79,17 @@
 
   .menu-stats { margin-top: 26px; font-size: 11px; opacity: 0.6; letter-spacing: 0.15em; line-height: 1.9; }
   .menu-stats b { color: var(--gold); font-weight: normal; }
+
+  #checkinCard {
+    margin: 2px 0 16px;
+    padding: 8px 18px;
+    border: 1px dashed rgba(230,193,90,0.55);
+    border-radius: 3px;
+    font-size: 11.5px; letter-spacing: 0.12em; line-height: 1.8;
+    background: rgba(230,193,90,0.06);
+  }
+  #checkinCard b { color: var(--gold); font-weight: normal; }
+  #checkinCard .dots { letter-spacing: 0.28em; margin: 0 6px; }
 
   /* ===== 机库 ===== */
   .hangar-title { font-size: 24px; letter-spacing: 0.3em; color: var(--copper); margin-bottom: 4px; }
@@ -242,9 +253,10 @@
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <button id="langBtn" class="ctl" style="top:12px;left:12px;font-size:12px;padding:7px 12px;z-index:11">EN</button>
-    <div class="refdes">REV 3.6 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
+    <div class="refdes">REV 3.7 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
     <div class="brand">SIGNAL</div>
     <div class="brand-sub" data-en="D E F E N D E R">信 号 防 线</div>
+    <div id="checkinCard"></div>
     <div class="menu-btns">
       <button class="btn" id="startBtn" data-en="POWER ON // ENDLESS">POWER ON // 开始</button>
       <button class="btn" id="storyBtn" data-en="STORY // CAMPAIGN">STORY // 主线剧情</button>
@@ -298,7 +310,8 @@
       <b>金币:</b>每局结算获得 得分÷100 + Boss击杀×25 金币,商店可购买主题皮肤和永久强化。<br>
       <b>每日签到:</b>每天打开游戏自动签到并送金币(逐日递增),连续 7 天解锁隐藏战机 AURUM;中断则从第 1 天重新累计。<br><br>
       <span class="r">每 5 波出现 Boss,三种形态轮换:短路核心(弹环+激光扫射)、热失控(螺旋弹幕)、时钟毛刺(瞬移爆发)。</span><br><br>
-      在机库解锁新皮肤:每个皮肤有专属特性,解锁进度自动保存。<br>
+      在机库解锁新皮肤:每个皮肤有专属特性,子弹颜色跟随机身配色,解锁进度自动保存。<br>
+      带 ♬ 标记的高级战机(AURUM/CORE/REAPER/PRISM)拥有<b>专属 BGM</b>,装备后连主菜单音乐都会改变。<br>
       <b>军械库 ARSENAL</b> 系列战机各配一种独特武器:双管、追踪导弹、贯穿弹、重炮、蛇形波动弹——手感各不相同,可在商店购买。
     </div>
     <button class="btn ghostbtn" id="helpBack" data-en="BACK">BACK // 返回</button>
@@ -619,7 +632,7 @@ const SKINS = [
   },
   {
     id: "prism", name: T("PRISM 棱镜", "PRISM"), trailColor: "#ffffff",
-    perkText: T("彩虹拖尾 · 道具持续 +60%", "Rainbow trail · power-ups last +60%"),
+    perkText: T("彩虹拖尾弹 · 道具持续 +60% · 专属BGM ♬", "Rainbow bullets · power-ups +60% · own BGM ♬"),
     unlock: { type: "pu", val: 40, text: T("累计拾取 40 个道具", "Pick up 40 power-ups in total") },
     perk: { puDur: 1.6, rainbow: true },
     draw(g) {
@@ -639,7 +652,7 @@ const SKINS = [
   },
   {
     id: "reaper", name: T("REAPER 收割者", "REAPER"), trailColor: "#ff5252",
-    perkText: T("受击不清空连击", "Getting hit keeps your combo"),
+    perkText: T("受击不清空连击 · 专属BGM ♬", "Keeps combo when hit · own BGM ♬"),
     unlock: { type: "kills", val: 500, text: T("累计击杀 500 个敌人", "Kill 500 enemies in total") },
     perk: { keepCombo: true },
     draw(g) {
@@ -904,9 +917,9 @@ const SKINS = [
   },
   {
     id: "aurum", name: T("AURUM 鎏金", "AURUM"), trailColor: "#ffd700",
-    perkText: T("得分 +20% · 射速 +18% · 道具吸取 +20", "Score +20% · fire rate +18% · magnet +20"),
+    perkText: T("得分+20% · 射速+18% · 星形弹 · 专属BGM ♬", "Score +20% · fire +18% · star shots · own BGM ♬"),
     reward: { text: T("连续签到 7 天解锁", "Check in 7 days in a row") },
-    perk: { scoreMult: 1.2, fireMult: 0.85, magnet: 20 },
+    perk: { scoreMult: 1.2, fireMult: 0.85, magnet: 20, bulletShape: "star" },
     draw(g) {
       const t = performance.now() / 1000;
       const shine = 0.6 + Math.sin(t * 3) * 0.4;
@@ -928,7 +941,7 @@ const SKINS = [
   },
   {
     id: "core", name: T("CORE 镜像核心", "MIRROR CORE"), trailColor: "#ff5252",
-    perkText: T("开局携带 2 层护盾", "Start with 2 shield layers"),
+    perkText: T("开局携带 2 层护盾 · 专属BGM ♬", "Start with 2 shields · own BGM ♬"),
     reward: { text: T("通关主线剧情解锁", "Clear the story mode") },
     perk: { startShield: 2 },
     draw(g) {
@@ -1083,10 +1096,16 @@ const SFX = {
 // ============ 背景音乐(合成循环) ============
 let bgmOn = true;
 let bgmMaster = null, bgmSched = null, bgmT = 0, bgmBar = 0;
-const BGM_ROOT = 55; // A1
-const BGM_CHORDS = [ [0,3,7], [5,8,12], [3,7,10], [7,10,14] ]; // 小调进行,相对根音的半音偏移
-const BGM_BAR_LEN = 2.0;
 const BGM_BASE = 0.28;
+// 默认曲目 + 高级战机专属曲目(root=根音Hz,chords=相对根音半音偏移,barLen=每小节秒,bass/arp=波形,steps=琶音密度)
+const BGM_DEFAULT = { root: 55, chords: [[0,3,7],[5,8,12],[3,7,10],[7,10,14]], barLen: 2.0, bass: "triangle", arp: "square", steps: 8 };
+const SKIN_BGM = {
+  aurum:  { root: 65.41, chords: [[0,4,7],[5,9,12],[7,11,14],[0,4,9]],            barLen: 1.8, bass: "triangle", arp: "triangle", steps: 8 },  // 大调恢弘
+  core:   { root: 49.00, chords: [[0,3,6],[1,4,7],[0,3,6],[-2,1,4]],              barLen: 2.4, bass: "sawtooth", arp: "square",   steps: 6 },  // 减和弦阴暗
+  reaper: { root: 55.00, chords: [[0,3,7],[0,3,7],[5,8,12],[6,10,13]],            barLen: 1.4, bass: "square",   arp: "square",   steps: 12 }, // 快节奏激进
+  prism:  { root: 82.41, chords: [[0,4,7,11],[2,5,9,12],[4,7,11,14],[5,9,12,16]], barLen: 2.2, bass: "triangle", arp: "triangle", steps: 8 },  // 大七和弦梦幻
+};
+function bgmProfile() { return SKIN_BGM[save.skin] || BGM_DEFAULT; }
 function bgmLevel() { return (bgmOn ? (save.bgmVol != null ? save.bgmVol : 0.6) : 0) * BGM_BASE; }
 function bgmInit() {
   if (bgmMaster) return;
@@ -1106,24 +1125,25 @@ function bgmNote(freq, t, dur, type, vol) {
   o.start(t); o.stop(t + dur + 0.05);
 }
 function bgmScheduleBar(t) {
+  const P = bgmProfile();
   const inBoss = !!boss;
-  const chord = BGM_CHORDS[bgmBar % BGM_CHORDS.length];
-  bgmNote(BGM_ROOT * Math.pow(2, chord[0] / 12), t, 0.9, "triangle", 0.5);
-  bgmNote(BGM_ROOT * Math.pow(2, chord[0] / 12) * 2, t + BGM_BAR_LEN / 2, 0.4, "triangle", 0.25);
-  const arpNotes = chord.map(iv => BGM_ROOT * 2 * Math.pow(2, iv / 12));
-  const steps = inBoss ? 12 : 8;
+  const chord = P.chords[bgmBar % P.chords.length];
+  bgmNote(P.root * Math.pow(2, chord[0] / 12), t, P.barLen * 0.45, P.bass, 0.5);
+  bgmNote(P.root * Math.pow(2, chord[0] / 12) * 2, t + P.barLen / 2, P.barLen * 0.2, P.bass, 0.25);
+  const arpNotes = chord.map(iv => P.root * 2 * Math.pow(2, iv / 12));
+  const steps = inBoss ? Math.round(P.steps * 1.5) : P.steps;
   for (let i = 0; i < steps; i++) {
     const nf = arpNotes[i % arpNotes.length] * (inBoss && i % 4 === 3 ? 2 : 1);
-    bgmNote(nf, t + i * (BGM_BAR_LEN / steps), (BGM_BAR_LEN / steps) * 0.85, "square", inBoss ? 0.075 : 0.05);
+    bgmNote(nf, t + i * (P.barLen / steps), (P.barLen / steps) * 0.85, P.arp, inBoss ? 0.075 : 0.05);
   }
   bgmBar++;
+  return P.barLen;
 }
 function bgmTick() {
   if (!bgmOn || !bgmMaster) return;
   const ac = audio();
   while (bgmT < ac.currentTime + 0.3) {
-    bgmScheduleBar(bgmT);
-    bgmT += BGM_BAR_LEN;
+    bgmT += bgmScheduleBar(bgmT);
   }
 }
 function startBgm() {
@@ -1401,12 +1421,17 @@ function nearestEnemyTo(x, y) {
 // ===== 子弹与武器 =====
 function mkBullet(p, vx, vy, opt) {
   opt = opt || {};
+  // 未显式指定颜色的子弹跟随机身配色;PRISM 发彩虹弹
+  const skinColor = p.perks && p.perks.rainbow
+    ? `hsl(${(performance.now() / 8) % 360},90%,65%)`
+    : (p.skin && p.skin.trailColor) || C.gold;
   return {
     x: p.x + (opt.ox || 0), y: p.y - 14 + (opt.oy || 0),
     vx, vy, r: opt.r || 4, o: p,
-    color: opt.color || C.gold, dmg: opt.dmg || 1,
+    color: opt.color || skinColor, dmg: opt.dmg || 1,
     pierce: opt.pierce || 0, homing: opt.homing || 0,
-    shape: opt.shape || "dot", wobble: opt.wobble || 0, wphase: opt.wphase || 0,
+    shape: opt.shape || (p.perks && p.perks.bulletShape) || "dot",
+    wobble: opt.wobble || 0, wphase: opt.wphase || 0,
   };
 }
 const GUNS = {
@@ -2168,6 +2193,18 @@ function render() {
       ctx.rotate(Math.atan2(b.vy, b.vx) + Math.PI/2);
       ctx.beginPath(); ctx.moveTo(0, -b.r*2); ctx.lineTo(b.r, b.r*1.2); ctx.lineTo(-b.r, b.r*1.2); ctx.closePath(); ctx.fill();
       ctx.restore();
+    } else if (b.shape === "star") {
+      ctx.save(); ctx.translate(b.x, b.y);
+      ctx.rotate(performance.now() / 200);
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        const rr = b.r * (i % 2 ? 0.45 : 1.6);
+        const x = Math.cos(a) * rr, y = Math.sin(a) * rr;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.closePath(); ctx.fill();
+      ctx.restore();
     } else {
       ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
     }
@@ -2705,11 +2742,27 @@ function updateMenuStats() {
     `${T("历史最佳", "BEST")} <b>${save.best.score.toLocaleString()}</b> · ${T("最远波次", "MAX WAVE")} <b>${save.best.wave}</b> · ${T("Boss 击杀", "BOSSES")} <b>${save.totalBoss}</b><br>` +
     `${T("累计击杀", "TOTAL KILLS")} <b>${save.totalKills.toLocaleString()}</b> · ${T("成就", "TROPHIES")} <b>${achN}/${ACH.length}</b> · ${T("金币", "COINS")} <b>${(save.coins || 0).toLocaleString()} ¤</b><br>` +
     `${T("今日挑战", "DAILY")}[${mod.name}${T(":", ": ")}${mod.desc}] ${T("最佳", "BEST")} <b>${save.daily.date === ds ? save.daily.score.toLocaleString() : T("未挑战", "not played")}</b><br>` +
-    `${T("每日签到", "CHECK-IN")} <b>DAY ${save.checkin && save.checkin.last === ds ? ((save.checkin.streak - 1) % 7) + 1 : 0}/7</b>` +
-    (ckToday ? ` <span style='color:var(--green)'>+${ckToday.coins} ¤${ckToday.ship ? " · " + T("★ 解锁隐藏战机 AURUM!", "★ HIDDEN SHIP AURUM UNLOCKED!") : ""}</span>` : "") + `<br>` +
     `${T("主线进度", "STORY")} <b>${save.storyProgress || 0}/${STORY_FINAL_TIER}</b>${save.storyDone ? " <span style='color:var(--green)'>" + T("✓已通关", "✓CLEARED") + "</span>" : ""}<br>` +
     `${T("皮肤", "SHIPS")} <b>${unlockedCount}/${SKINS.length}</b> · ${T("当前载体", "CURRENT")} <b>${curSkin().name}</b>` +
     (hasStorage ? "" : "<br><span style='color:var(--fault)'>" + T("⚠ 当前环境不支持存档,进度仅本次有效", "⚠ Storage unavailable — progress lasts this session only") + "</span>");
+  updateCheckinCard(ds);
+}
+function updateCheckinCard(ds) {
+  const el = $("checkinCard");
+  const ckDay = save.checkin && save.checkin.last === ds ? ((save.checkin.streak - 1) % 7) + 1 : 0;
+  let dots = "";
+  for (let i = 1; i <= 7; i++)
+    dots += `<span style="color:${i <= ckDay ? "var(--gold)" : "rgba(233,228,212,0.25)"}">${i <= ckDay ? "◆" : "◇"}</span>`;
+  const hasAurum = (save.owned || []).includes("aurum");
+  let tail;
+  if (ckToday && ckToday.ship) tail = `<br><span style="color:var(--gold)">★ ${T("解锁隐藏战机 AURUM!", "HIDDEN SHIP AURUM UNLOCKED!")}</span>`;
+  else if (!hasAurum) tail = `<br><span style="opacity:0.6">${T("连续 7 天解锁隐藏战机 AURUM", "7-day streak unlocks the hidden ship AURUM")}</span>`;
+  else tail = "";
+  el.innerHTML =
+    `${T("每日签到", "DAILY CHECK-IN")}<span class="dots">${dots}</span><b>DAY ${ckDay}/7</b>` +
+    (ckToday ? ` <span style="color:var(--green)">+${ckToday.coins} ¤</span>`
+             : ckDay > 0 ? ` <span style="color:var(--green)">✓${T("今日已签", " done today")}</span>` : "") +
+    tail;
 }
 
 // ============ 状态切换 ============
@@ -2988,14 +3041,15 @@ const EN_HELP = `
       <b>Coins:</b> each run pays score÷100 + boss kills×25 coins; spend them in the shop on themed ships and permanent upgrades.<br>
       <b>Daily check-in:</b> opening the game checks you in automatically and pays coins (growing each day); a 7-day streak unlocks the hidden ship AURUM. Miss a day and the streak restarts.<br><br>
       <span class="r">A boss appears every 5 waves, rotating three forms: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts).</span><br><br>
-      Unlock new ships in the hangar: every ship has a unique perk, and progress saves automatically.<br>
+      Unlock new ships in the hangar: every ship has a unique perk, bullets are tinted to match the hull, and progress saves automatically.<br>
+      Elite ships marked ♬ (AURUM / MIRROR CORE / REAPER / PRISM) carry their <b>own BGM</b> — equip one and even the menu music changes.<br>
       The <b>ARSENAL</b> series each carries a unique weapon: twin shot, homing missiles, piercing lance, heavy cannon, serpentine wave — all in the shop.
 `;
 function applyLangDom() {
   $("langBtn").textContent = LANG === "zh" ? "EN" : "中文";
   if (LANG !== "en") return;
   document.documentElement.lang = "en";
-  document.title = "SIGNAL DEFENDER REV 3.6";
+  document.title = "SIGNAL DEFENDER REV 3.7";
   document.querySelectorAll("[data-en]").forEach(el => { el.innerHTML = el.dataset.en; });
   $("helpText").innerHTML = EN_HELP;
 }
