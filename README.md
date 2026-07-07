@@ -10,13 +10,16 @@ You are U1, the last arbitration core still awake on the motherboard. Late one n
 
 ## ✨ Features
 
-- **5 game modes**: Endless / Story (a 4-chapter mystery campaign) / Daily Challenge (one global seed + a daily modifier) / local 2-player Versus / achievement hunting
+- **6 game modes**: Endless / Story (a 4-chapter mystery campaign) / Daily Challenge (one global seed + a daily modifier) / Boss Rush gauntlet / local 2-player Versus / achievement hunting
+- **Random in-run events**: Overvolt, Data Rain, Bus Silence, Magnet Storm — timed events that reshape each run roguelite-style
 - **23 playable ships**: unlocked via challenges, shop purchases, achievement rewards, or a 7-day check-in streak; each ARSENAL-series ship carries a unique weapon (homing missiles, piercing lance, heavy cannon, serpentine wave shot, twin shot)
 - **3 rotating boss forms**: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts) — one boss every 5 waves, scaling across cycles
 - **Coin economy**: score converts to coins; the shop sells themed ships (star / sport / supercar series) and permanent upgrades
 - **Daily check-in**: a dedicated sign-in page with 7 reward tiles and growing coin payouts; a 7-day streak unlocks the hidden ship AURUM, and days you launched but forgot to claim can be made up later without breaking the streak
 - **Synthesized audio**: background music and every sound effect are generated in real time with the Web Audio API — the BGM shifts automatically during boss fights, and four elite ships (AURUM / MIRROR CORE / REAPER / PRISM) carry their own exclusive themes; independent BGM/SFX volume controls
 - **Per-ship bullet styling**: shots are tinted to match each hull — PRISM fires rainbow bullets, AURUM fires spinning gold stars
+- **Drone wingman**: a purchasable orbiting co-processor with auto-aim fire; elite ships carry two
+- **Shareable score cards**: one click renders a PCB-styled PNG of your run (score, grade, ship) to save or share
 - **i18n**: English / Chinese, auto-detected from the browser with an in-game toggle; the choice persists
 - **Mobile-friendly**: touch devices switch to one-finger drag + two-finger dash automatically; portrait and landscape both supported, notch-safe
 - **Graze system**: skim enemy bullets for bonus points — high-risk, high-skill play

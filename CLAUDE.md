@@ -1,6 +1,6 @@
 # SIGNAL // 信号防线 — 项目说明
 
-PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 3.8**。中英双语（面向国外求职展示，英文为对外默认）。
+PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 4.0**。中英双语（面向国外求职展示，英文为对外默认）。
 
 ## 链接
 
@@ -44,6 +44,10 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 - 签到 UI: 主菜单 `#checkinCard` 卡片(7 菱形进度点)，`updateCheckinCard()` 随 updateMenuStats 刷新
 - 存档: localStorage 键 `signal_save_v3`，`save` 对象 Object.assign 合并保证旧档兼容
 - 移动端: `IS_MOBILE` 检测(pointer:coarse)，单指拖动+双指点按冲刺，`@media (pointer:coarse)` 样式块
+- 随机事件: `EVENTS[]` 4 种(overload/datarain/silence/magnet)，`runEvent`/`runEventT` 调度(非 Boss 波、非对战/连战)；效果钩子在 diff()(速度)、scoreMult()(×2)、powerups 循环(磁吸)、render()(边框光晕/暗幕)；datarain 掉 coin 道具(+5 进 runCoins，结算并入金币)
+- Boss 连战: mode="rush"，wave 从 5 起、damageBoss 后 +4 跳到下个 Boss 波；`rushTime` 计时，HUD 右侧显示 TIME；成绩存 `save.rush={boss,time}`，不写 best.score/best.wave，wave 类成就已排除 rush
+- 无人机: 商店 upg `drone`(1200¤)，startGame 里 `p.drones = SKIN_BGM[skin]?2:1`，环绕 42px 自动瞄准射击(update/render 各一段)
+- 成绩卡: `buildShareCard()` 离屏 canvas 生成 PCB 风格 PNG(评级 `scoreGrade()`)，`shareCard()` 优先 navigator.share 否则下载；对战模式隐藏 shareBtn
 
 ## 已知边界 / 未做
 
