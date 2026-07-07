@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SIGNAL // 信号防线 REV 3.7</title>
+<title>SIGNAL // 信号防线 REV 3.8</title>
 <style>
   :root {
     --bg: #06231a;
@@ -87,9 +87,37 @@
     border-radius: 3px;
     font-size: 11.5px; letter-spacing: 0.12em; line-height: 1.8;
     background: rgba(230,193,90,0.06);
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
+  #checkinCard:hover { border-color: var(--gold); box-shadow: 0 0 14px rgba(230,193,90,0.3); }
   #checkinCard b { color: var(--gold); font-weight: normal; }
   #checkinCard .dots { letter-spacing: 0.28em; margin: 0 6px; }
+
+  /* ===== 签到页 ===== */
+  #ckDays { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 20px 0 6px; max-width: 680px; }
+  .ck-day {
+    width: 76px; padding: 10px 4px 9px;
+    border: 1.5px solid rgba(233,228,212,0.25); border-radius: 4px;
+    font-size: 10.5px; letter-spacing: 0.08em;
+    background: rgba(0,0,0,0.25);
+    display: flex; flex-direction: column;
+  }
+  .ck-day .cd-r { margin: auto 0; }
+  .ck-day .cd-n { font-size: 9px; opacity: 0.6; margin-bottom: 5px; letter-spacing: 0.15em; }
+  .ck-day .cd-r { color: var(--gold); font-size: 12px; line-height: 1.5; }
+  .ck-day.done { border-color: var(--gold); background: rgba(230,193,90,0.12); }
+  .ck-day.done .cd-n { color: var(--gold); opacity: 0.9; }
+  .ck-day.next { border-color: var(--green); animation: ckpulse 1.4s ease-in-out infinite; }
+  .ck-day.day7 {
+    width: 104px;
+    border-color: rgba(230,193,90,0.8); border-width: 2px;
+    box-shadow: 0 0 18px rgba(230,193,90,0.35);
+    background: rgba(230,193,90,0.08);
+  }
+  .ck-day.day7 canvas { display: block; margin: 0 auto; }
+  @keyframes ckpulse { 50% { box-shadow: 0 0 22px rgba(111,224,122,0.7); border-color: var(--green); } }
+  #ckResult { min-height: 22px; color: var(--green); font-size: 13px; letter-spacing: 0.12em; margin: 10px 0 14px; }
 
   /* ===== 机库 ===== */
   .hangar-title { font-size: 24px; letter-spacing: 0.3em; color: var(--copper); margin-bottom: 4px; }
@@ -253,7 +281,7 @@
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <button id="langBtn" class="ctl" style="top:12px;left:12px;font-size:12px;padding:7px 12px;z-index:11">EN</button>
-    <div class="refdes">REV 3.7 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
+    <div class="refdes">REV 3.8 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
     <div class="brand">SIGNAL</div>
     <div class="brand-sub" data-en="D E F E N D E R">信 号 防 线</div>
     <div id="checkinCard"></div>
@@ -308,7 +336,7 @@
       短路团(红色八边形)掉率 50%,炮台 30%,是刷道具的主要来源。<br>
       <b>擦弹:</b>敌弹贴着飞船掠过而不命中,可得少量分数,高手向操作。<br>
       <b>金币:</b>每局结算获得 得分÷100 + Boss击杀×25 金币,商店可购买主题皮肤和永久强化。<br>
-      <b>每日签到:</b>每天打开游戏自动签到并送金币(逐日递增),连续 7 天解锁隐藏战机 AURUM;中断则从第 1 天重新累计。<br><br>
+      <b>每日签到:</b>点主菜单签到卡进入签到页,手动点击签到领奖(金币逐日递增),连续 7 天解锁隐藏战机 AURUM。某天上线过但忘了签?之后随时<b>补签</b>,连续不中断;完全没上线的日期无法补,从第 1 天重算。<br><br>
       <span class="r">每 5 波出现 Boss,三种形态轮换:短路核心(弹环+激光扫射)、热失控(螺旋弹幕)、时钟毛刺(瞬移爆发)。</span><br><br>
       在机库解锁新皮肤:每个皮肤有专属特性,子弹颜色跟随机身配色,解锁进度自动保存。<br>
       带 ♬ 标记的高级战机(AURUM/CORE/REAPER/PRISM)拥有<b>专属 BGM</b>,装备后连主菜单音乐都会改变。<br>
@@ -337,6 +365,17 @@
     <button class="btn" id="sfxTestBtn" style="min-width:200px" data-en="TEST SFX">试听音效</button>
     <div style="height:24px"></div>
     <button class="btn ghostbtn" id="settingsBack" data-en="BACK">BACK // 返回</button>
+  </div>
+
+  <!-- 每日签到页 -->
+  <div id="checkinPage" class="overlay hidden">
+    <div class="hangar-title" data-en="DAILY CHECK-IN">SIGN-IN // 每日签到</div>
+    <div class="refdes" id="ckStreakLine"></div>
+    <div id="ckDays"></div>
+    <div id="ckResult"></div>
+    <button class="btn" id="ckClaimBtn" style="min-width:280px"></button>
+    <div style="height:12px"></div>
+    <button class="btn ghostbtn" id="checkinBack" data-en="BACK">BACK // 返回</button>
   </div>
 
   <!-- 剧情:序幕 -->
@@ -1198,16 +1237,50 @@ function todayStr() { return dateStr(new Date()); }
 function todaySeed() { return Number(todayStr().replace(/-/g, "")); }
 
 // ============ 每日签到 ============
+// 上线日记入 save.visits,点击签到才发奖;上线过但没签的日期可随时补签,不断连续
 const CHECKIN_COINS = [50, 75, 100, 150, 200, 300, 500];
-let ckToday = null; // 本次启动的签到结果,用于主菜单展示
-function dailyCheckin() {
+function ckState() {
+  if (!save.checkin || !save.checkin.claimed) {
+    // 兼容 3.6 旧档 {last, streak} → 转为 claimed 映射
+    const old = save.checkin;
+    save.checkin = { claimed: {}, streak: (old && old.streak) || 0, last: (old && old.last) || "" };
+    if (old && old.last) save.checkin.claimed[old.last] = true;
+  }
+  return save.checkin;
+}
+function recordVisit() {
   const ds = todayStr();
-  if (!save.checkin) save.checkin = { last: "", streak: 0 };
-  const ck = save.checkin;
-  if (ck.last === ds) return;
-  const y = new Date(); y.setDate(y.getDate() - 1);
-  ck.streak = ck.last === dateStr(y) ? ck.streak + 1 : 1;
-  ck.last = ds;
+  save.visits = save.visits || [];
+  if (!save.visits.includes(ds)) save.visits.push(ds);
+  if (save.visits.length > 30) save.visits = save.visits.slice(-30);
+  persist();
+}
+// 待签列表: 上线过但未签的日期,升序(今天在末尾)
+function pendingCheckins() {
+  const ck = ckState();
+  return (save.visits || []).filter(d => !ck.claimed[d]).sort();
+}
+// 展示用: done=当前周期已亮格数,continued=下一次签到是否延续连击
+function ckDisplay() {
+  const ck = ckState();
+  const pend = pendingCheckins();
+  if (!pend.length) return { done: ck.streak ? ((ck.streak - 1) % 7) + 1 : 0, pend, continued: true };
+  const prev = new Date(pend[0] + "T12:00:00"); prev.setDate(prev.getDate() - 1);
+  const continued = !!ck.claimed[dateStr(prev)];
+  return { done: continued ? ck.streak % 7 : 0, pend, continued };
+}
+function claimCheckin() {
+  // 签掉待签列表中最早的一天;前一天已签则连击 +1,否则从 1 重计
+  const ck = ckState();
+  const pend = pendingCheckins();
+  if (!pend.length) return null;
+  const d = pend[0];
+  const prev = new Date(d + "T12:00:00"); prev.setDate(prev.getDate() - 1);
+  ck.streak = ck.claimed[dateStr(prev)] ? ck.streak + 1 : 1;
+  ck.claimed[d] = true;
+  ck.last = d;
+  const cutoff = dateStr(new Date(Date.now() - 30 * 864e5));
+  for (const k of Object.keys(ck.claimed)) if (k < cutoff) delete ck.claimed[k];
   const day = ((ck.streak - 1) % 7) + 1;
   let coins = CHECKIN_COINS[day - 1], ship = false;
   if (day === 7) {
@@ -1216,8 +1289,8 @@ function dailyCheckin() {
     else coins += 300; // 已拥有 AURUM 后,每满 7 天改送额外金币
   }
   save.coins = (save.coins || 0) + coins;
-  ckToday = { day, coins, ship };
   persist();
+  return { date: d, day, coins, ship, makeup: d !== todayStr() };
 }
 
 // ============ 成就 ============
@@ -1849,7 +1922,7 @@ function loop(t) {
   last = t;
   if (state === S.PLAY) update(dt);
   render();
-  const previewOpen = ["hangar","shop","vsSelect"].some(id => !document.getElementById(id).classList.contains("hidden"));
+  const previewOpen = ["hangar","shop","vsSelect","checkinPage"].some(id => !document.getElementById(id).classList.contains("hidden"));
   if (previewOpen) {
     for (const p of livePreviews) drawSkinPreview(p.cv, p.sk);
   }
@@ -2745,24 +2818,72 @@ function updateMenuStats() {
     `${T("主线进度", "STORY")} <b>${save.storyProgress || 0}/${STORY_FINAL_TIER}</b>${save.storyDone ? " <span style='color:var(--green)'>" + T("✓已通关", "✓CLEARED") + "</span>" : ""}<br>` +
     `${T("皮肤", "SHIPS")} <b>${unlockedCount}/${SKINS.length}</b> · ${T("当前载体", "CURRENT")} <b>${curSkin().name}</b>` +
     (hasStorage ? "" : "<br><span style='color:var(--fault)'>" + T("⚠ 当前环境不支持存档,进度仅本次有效", "⚠ Storage unavailable — progress lasts this session only") + "</span>");
-  updateCheckinCard(ds);
+  updateCheckinCard();
 }
-function updateCheckinCard(ds) {
+function updateCheckinCard() {
   const el = $("checkinCard");
-  const ckDay = save.checkin && save.checkin.last === ds ? ((save.checkin.streak - 1) % 7) + 1 : 0;
+  const d = ckDisplay();
   let dots = "";
   for (let i = 1; i <= 7; i++)
-    dots += `<span style="color:${i <= ckDay ? "var(--gold)" : "rgba(233,228,212,0.25)"}">${i <= ckDay ? "◆" : "◇"}</span>`;
+    dots += `<span style="color:${i <= d.done ? "var(--gold)" : "rgba(233,228,212,0.25)"}">${i <= d.done ? "◆" : "◇"}</span>`;
   const hasAurum = (save.owned || []).includes("aurum");
-  let tail;
-  if (ckToday && ckToday.ship) tail = `<br><span style="color:var(--gold)">★ ${T("解锁隐藏战机 AURUM!", "HIDDEN SHIP AURUM UNLOCKED!")}</span>`;
-  else if (!hasAurum) tail = `<br><span style="opacity:0.6">${T("连续 7 天解锁隐藏战机 AURUM", "7-day streak unlocks the hidden ship AURUM")}</span>`;
-  else tail = "";
   el.innerHTML =
-    `${T("每日签到", "DAILY CHECK-IN")}<span class="dots">${dots}</span><b>DAY ${ckDay}/7</b>` +
-    (ckToday ? ` <span style="color:var(--green)">+${ckToday.coins} ¤</span>`
-             : ckDay > 0 ? ` <span style="color:var(--green)">✓${T("今日已签", " done today")}</span>` : "") +
-    tail;
+    `${T("每日签到", "DAILY CHECK-IN")}<span class="dots">${dots}</span><b>DAY ${d.done}/7</b>` +
+    (d.pend.length
+      ? `<br><span class="blink" style="color:var(--green)">▶ ${T("可签到,点击进入", "check-in ready — click here")}${d.pend.length > 1 ? " ×" + d.pend.length : ""}</span>`
+      : ` <span style="color:var(--green)">✓${T("今日已签", " done today")}</span>` +
+        (hasAurum ? "" : `<br><span style="opacity:0.6">${T("连续 7 天解锁隐藏战机 AURUM", "7-day streak unlocks the hidden ship AURUM")}</span>`));
+}
+// ============ 签到页 ============
+function buildCheckinPage() {
+  const ck = ckState();
+  const d = ckDisplay();
+  const next = d.pend.length ? d.done + 1 : 0;
+  const hasAurum = (save.owned || []).includes("aurum");
+  $("ckStreakLine").textContent =
+    T(`当前连续 ${d.continued ? ck.streak : 0} 天`, `CURRENT STREAK: ${d.continued ? ck.streak : 0} DAY(S)`) +
+    (d.pend.length && !d.continued && ck.streak > 0 ? T(" · 连续已中断,将从第 1 天重新开始", " · streak broken — restarting at day 1") : "");
+  const wrap = $("ckDays");
+  wrap.innerHTML = "";
+  livePreviews = [];
+  for (let i = 1; i <= 7; i++) {
+    const card = document.createElement("div");
+    card.className = "ck-day" + (i === 7 ? " day7" : "") + (i <= d.done ? " done" : "") + (i === next ? " next" : "");
+    const head = `<div class="cd-n">DAY ${i}${i <= d.done ? " ✓" : ""}</div>`;
+    if (i === 7 && !hasAurum) {
+      card.innerHTML = head;
+      const cv = document.createElement("canvas");
+      card.appendChild(cv);
+      const nm = document.createElement("div");
+      nm.className = "cd-r";
+      nm.innerHTML = `<span style="color:#ffd700">AURUM</span><br>+${CHECKIN_COINS[6]} ¤`;
+      card.appendChild(nm);
+      const sk = SKINS.find(s => s.id === "aurum");
+      drawSkinPreview(cv, sk);
+      livePreviews.push({ cv, sk });
+    } else if (i === 7) {
+      card.innerHTML = head + `<div class="cd-r" style="margin-top:20px">+${CHECKIN_COINS[6] + 300} ¤</div>`;
+    } else {
+      card.innerHTML = head + `<div class="cd-r">+${CHECKIN_COINS[i - 1]} ¤</div>`;
+    }
+    wrap.appendChild(card);
+  }
+  const btn = $("ckClaimBtn");
+  if (d.pend.length) {
+    btn.disabled = false; btn.style.opacity = 1;
+    btn.textContent = d.pend[0] === todayStr()
+      ? T("签到 // SIGN IN", "SIGN IN")
+      : T(`补签 ${d.pend[0].slice(5)}`, `MAKE UP ${d.pend[0].slice(5)}`);
+  } else {
+    btn.disabled = true; btn.style.opacity = 0.4;
+    btn.textContent = T("今日已签 ✓", "SIGNED TODAY ✓");
+  }
+}
+function openCheckin() {
+  $("ckResult").textContent = "";
+  buildCheckinPage();
+  $("menu").classList.add("hidden");
+  $("checkinPage").classList.remove("hidden");
 }
 
 // ============ 状态切换 ============
@@ -2900,7 +3021,7 @@ function togglePause() {
 }
 function toMenu() {
   state = S.MENU;
-  ["hud","pauseBtn","bombBtn","dashBtn","bossBar","gameover","pauseOverlay","hangar","help","achievs","shop","storyIntro","storyBeat","vsSelect","settings"].forEach(id => $(id).classList.add("hidden"));
+  ["hud","pauseBtn","bombBtn","dashBtn","bossBar","gameover","pauseOverlay","hangar","help","achievs","shop","storyIntro","storyBeat","vsSelect","settings","checkinPage"].forEach(id => $(id).classList.add("hidden"));
   updateMenuStats();
   $("menu").classList.remove("hidden");
 }
@@ -3009,6 +3130,21 @@ $("helpBack").addEventListener("click", () => {
 $("bombBtn").addEventListener("pointerdown", e => { e.stopPropagation(); useBomb(players[0]); });
 $("dashBtn").addEventListener("pointerdown", e => { e.stopPropagation(); doDash(players[0]); });
 $("muteBtn").addEventListener("click", () => setBgmOn(!bgmOn));
+$("checkinCard").addEventListener("click", openCheckin);
+$("checkinBack").addEventListener("click", () => {
+  $("checkinPage").classList.add("hidden");
+  updateMenuStats();
+  $("menu").classList.remove("hidden");
+});
+$("ckClaimBtn").addEventListener("click", () => {
+  const r = claimCheckin();
+  if (!r) return;
+  SFX.unlock();
+  $("ckResult").innerHTML = r.ship
+    ? `★ ${T("隐藏战机 AURUM 入库!", "HIDDEN SHIP AURUM ACQUIRED!")} +${r.coins} ¤`
+    : `${r.makeup ? T(`已补签 ${r.date.slice(5)} · `, `Made up ${r.date.slice(5)} · `) : "✓ "}DAY ${r.day} +${r.coins} ¤`;
+  buildCheckinPage();
+});
 function firstInteract() {
   startBgm();
   document.removeEventListener("pointerdown", firstInteract);
@@ -3039,7 +3175,7 @@ const EN_HELP = `
       Short-circuit clusters (red octagons) drop power-ups 50% of the time, turrets 30% — your main supply line.<br>
       <b>Grazing:</b> let enemy bullets skim past your hull without hitting for bonus points. High-skill play.<br>
       <b>Coins:</b> each run pays score÷100 + boss kills×25 coins; spend them in the shop on themed ships and permanent upgrades.<br>
-      <b>Daily check-in:</b> opening the game checks you in automatically and pays coins (growing each day); a 7-day streak unlocks the hidden ship AURUM. Miss a day and the streak restarts.<br><br>
+      <b>Daily check-in:</b> click the check-in card on the main menu and claim your reward (coins grow each day); a 7-day streak unlocks the hidden ship AURUM. Launched the game but forgot to claim? You can <b>make it up later</b> without breaking the streak; days you never launched can't be made up — the streak restarts at day 1.<br><br>
       <span class="r">A boss appears every 5 waves, rotating three forms: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts).</span><br><br>
       Unlock new ships in the hangar: every ship has a unique perk, bullets are tinted to match the hull, and progress saves automatically.<br>
       Elite ships marked ♬ (AURUM / MIRROR CORE / REAPER / PRISM) carry their <b>own BGM</b> — equip one and even the menu music changes.<br>
@@ -3049,7 +3185,7 @@ function applyLangDom() {
   $("langBtn").textContent = LANG === "zh" ? "EN" : "中文";
   if (LANG !== "en") return;
   document.documentElement.lang = "en";
-  document.title = "SIGNAL DEFENDER REV 3.7";
+  document.title = "SIGNAL DEFENDER REV 3.8";
   document.querySelectorAll("[data-en]").forEach(el => { el.innerHTML = el.dataset.en; });
   $("helpText").innerHTML = EN_HELP;
 }
@@ -3065,8 +3201,10 @@ loadSave().then(() => {
   applyTheme();
   bgmOn = save.bgm !== false;
   updateMuteBtn();
-  dailyCheckin();
+  recordVisit();
   updateMenuStats();
+  // 当天有待签(含补签)时自动弹出签到页,营造每日开机仪式
+  if (pendingCheckins().length) openCheckin();
 });
 updateMenuStats();
 requestAnimationFrame(loop);
