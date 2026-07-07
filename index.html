@@ -226,14 +226,30 @@
   .ach-list { max-width: 520px; width: 100%; display: flex; flex-direction: column; gap: 8px; }
   .ach-row {
     display: flex; gap: 12px; align-items: center;
-    border: 1px solid rgba(233,228,212,0.2); border-radius: 3px;
+    border: 1px solid rgba(233,228,212,0.15);
+    border-left: 3px solid rgba(233,228,212,0.25);
+    border-radius: 3px;
     padding: 8px 12px; text-align: left; font-size: 12px;
   }
-  .ach-row.done { border-color: rgba(111,224,122,0.6); }
   .ach-row .ai { font-size: 17px; }
-  .ach-row .an { color: var(--gold); letter-spacing: 0.08em; }
-  .ach-row.done .an { color: var(--green); }
+  .ach-row .atext { flex: 1; }
+  .ach-row .an { letter-spacing: 0.08em; }
   .ach-row .ad { opacity: 0.65; font-size: 11px; }
+  .ach-row .ab { font-size: 9px; letter-spacing: 0.15em; padding: 3px 8px; border-radius: 2px; white-space: nowrap; }
+  /* 未解锁:整体压暗,一眼看出是"灰的" */
+  .ach-row.locked { opacity: 0.45; }
+  .ach-row.locked .ai { filter: grayscale(1); }
+  .ach-row.locked .an { color: var(--silk); }
+  .ach-row.locked .ab { color: rgba(233,228,212,0.6); border: 1px solid rgba(233,228,212,0.35); }
+  /* 已达成:绿色左栏+底色+发光 */
+  .ach-row.done {
+    border-color: rgba(111,224,122,0.45);
+    border-left-color: var(--green);
+    background: rgba(111,224,122,0.09);
+    box-shadow: 0 0 12px rgba(111,224,122,0.15);
+  }
+  .ach-row.done .an { color: var(--green); }
+  .ach-row.done .ab { color: #06231a; background: var(--green); font-weight: bold; }
 
   .setrow { display: flex; align-items: center; gap: 14px; margin: 16px 0; width: min(88vw, 380px); }
   .setrow label { font-size: 12px; letter-spacing: 0.15em; width: 120px; text-align: left; color: var(--gold); }
@@ -2924,7 +2940,7 @@ function buildAch() {
     const done = !!save.ach[a.id];
     if (done) n++;
     const row = document.createElement("div");
-    row.className = "ach-row" + (done ? " done" : "");
+    row.className = "ach-row " + (done ? "done" : "locked");
     let rewardTxt = "";
     if (a.reward) {
       const parts = [];
@@ -2932,7 +2948,10 @@ function buildAch() {
       if (a.reward.skin) parts.push(T("解锁新战机", "unlocks a ship"));
       rewardTxt = T(` · 奖励: ${parts.join(" / ")}`, ` · Reward: ${parts.join(" / ")}`);
     }
-    row.innerHTML = `<span class="ai">${done ? "🏆" : "🔒"}</span><span><span class="an">${a.name}</span><br><span class="ad">${a.desc}${rewardTxt}</span></span>`;
+    const badge = done ? T("✓ 已达成", "✓ DONE") : T("未解锁", "LOCKED");
+    row.innerHTML = `<span class="ai">${done ? "🏆" : "🔒"}</span>` +
+      `<span class="atext"><span class="an">${a.name}</span><br><span class="ad">${a.desc}${rewardTxt}</span></span>` +
+      `<span class="ab">${badge}</span>`;
     listEl.appendChild(row);
   }
   $("achCount").textContent = T(`已达成 ${n} / ${ACH.length}`, `UNLOCKED ${n} / ${ACH.length}`);
