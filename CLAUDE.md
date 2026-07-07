@@ -16,7 +16,7 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 
 1. 改 `index.html`
 2. 语法自检: 提取 `<script>` 内容后 `node --check`（无测试框架，靠这个 + 浏览器实测）
-3. 版本号在两处: `<title>` 和主菜单 `.refdes`（格式 REV 3.x），大更新时同步 bump
+3. 版本号在三处: `<title>`、主菜单 `.refdes`、以及英文模式 `applyLangDom()` 里的 `document.title`（格式 REV x.y），bump 时三处同步
 4. `git commit` + `git push` → Pages 约 1 分钟自动更新
 5. 大版本再打 tag + `gh release create`
 
@@ -47,7 +47,7 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 - 随机事件: `EVENTS[]` 4 种(overload/datarain/silence/magnet)，`runEvent`/`runEventT` 调度(非 Boss 波、非对战/连战)；效果钩子在 diff()(速度)、scoreMult()(×2)、powerups 循环(磁吸)、render()(边框光晕/暗幕)；datarain 掉 coin 道具(+5 进 runCoins，结算并入金币)
 - Boss 连战: mode="rush"，wave 从 5 起、damageBoss 后 +4 跳到下个 Boss 波；`rushTime` 计时，HUD 右侧显示 TIME；成绩存 `save.rush={boss,time}`，不写 best.score/best.wave，wave 类成就已排除 rush
 - 无人机: 商店 upg `drone`(1200¤)，startGame 里 `p.drones = SKIN_BGM[skin]?2:1`，环绕 42px 自动瞄准射击(update/render 各一段)
-- 成绩卡: `buildShareCard()` 离屏 canvas 生成 PCB 风格 PNG(评级 `scoreGrade()`)，`shareCard()` 优先 navigator.share 否则下载；对战模式隐藏 shareBtn
+- 成绩卡: `buildShareCard()` 离屏 canvas 生成 PCB 风格 PNG(评级 `scoreGrade()`)；结算点 shareBtn → `openShareView()` 打开预览页 `#shareView`(图片可长按/右键保存)，`saveShareCard()` 优先 navigator.share 否则下载；对战模式隐藏 shareBtn
 
 ## 已知边界 / 未做
 
