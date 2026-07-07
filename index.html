@@ -119,6 +119,13 @@
   @keyframes ckpulse { 50% { box-shadow: 0 0 22px rgba(111,224,122,0.7); border-color: var(--green); } }
   #ckResult { min-height: 22px; color: var(--green); font-size: 13px; letter-spacing: 0.12em; margin: 10px 0 14px; }
 
+  #shareImg {
+    max-width: min(92vw, 720px); height: auto;
+    margin-top: 14px;
+    border: 1px solid rgba(233,228,212,0.35); border-radius: 3px;
+    box-shadow: 0 0 30px rgba(232,131,58,0.25);
+  }
+
   /* ===== 机库 ===== */
   .hangar-title { font-size: 24px; letter-spacing: 0.3em; color: var(--copper); margin-bottom: 4px; }
   .hangar-sec { font-size: 11px; letter-spacing: 0.3em; color: var(--gold); opacity: 0.8; margin: 18px 0 10px; }
@@ -341,7 +348,7 @@
       <b>金币:</b>每局结算获得 得分÷100 + Boss击杀×25 金币,商店可购买主题皮肤和永久强化。<br>
       <b>每日签到:</b>点主菜单签到卡进入签到页,手动点击签到领奖(金币逐日递增),连续 7 天解锁隐藏战机 AURUM。某天上线过但忘了签?之后随时<b>补签</b>,连续不中断;完全没上线的日期无法补,从第 1 天重算。<br>
       <b>无人机:</b>商店购买「协处理无人机」,环绕机身自动瞄准开火;带 ♬ 的战机可带双机。<br>
-      <b>成绩卡:</b>结算界面点 SHARE 生成 PCB 风格成绩卡图片(含评级),可保存分享。<br><br>
+      <b>成绩卡:</b>结算界面点 SHARE 即可预览 PCB 风格成绩卡(含评级),长按/右键图片或点保存按钮分享。<br><br>
       <span class="r">每 5 波出现 Boss,三种形态轮换:短路核心(弹环+激光扫射)、热失控(螺旋弹幕)、时钟毛刺(瞬移爆发)。</span><br><br>
       在机库解锁新皮肤:每个皮肤有专属特性,子弹颜色跟随机身配色,解锁进度自动保存。<br>
       带 ♬ 标记的高级战机(AURUM/CORE/REAPER/PRISM)拥有<b>专属 BGM</b>,装备后连主菜单音乐都会改变。<br>
@@ -469,6 +476,18 @@
       <button class="btn" id="retryBtn" data-en="REBOOT // RETRY">REBOOT // 再来</button>
       <button class="btn ghostbtn" id="shareBtn" data-en="SHARE // SCORE CARD">SHARE // 成绩卡</button>
       <button class="btn ghostbtn" id="toMenuBtn" data-en="MENU">MENU // 主菜单</button>
+    </div>
+  </div>
+
+  <!-- 成绩卡预览 -->
+  <div id="shareView" class="overlay hidden">
+    <div class="hangar-title" data-en="SCORE CARD">SHARE // 成绩卡</div>
+    <div class="refdes" data-en="long-press / right-click the image to save it directly">长按或右键图片可直接保存</div>
+    <img id="shareImg" alt="score card">
+    <div style="height:16px"></div>
+    <div class="menu-btns">
+      <button class="btn" id="shareSaveBtn" data-en="SAVE / SHARE">SAVE // 保存分享</button>
+      <button class="btn ghostbtn" id="shareBack" data-en="BACK">BACK // 返回</button>
     </div>
   </div>
 
@@ -3219,9 +3238,18 @@ function buildShareCard() {
   g.fillText(T("PCB 弹幕射击 · 单文件零依赖", "PCB bullet-hell · single-file · zero deps"), 46, Hc - 52);
   return cv;
 }
-function shareCard() {
+let shareCv = null;
+function openShareView() {
   SFX.select();
-  buildShareCard().toBlob(b => {
+  shareCv = buildShareCard();
+  $("shareImg").src = shareCv.toDataURL("image/png");
+  $("gameover").classList.add("hidden");
+  $("shareView").classList.remove("hidden");
+}
+function saveShareCard() {
+  if (!shareCv) return;
+  SFX.select();
+  shareCv.toBlob(b => {
     if (!b) return;
     const file = new File([b], "signal-score.png", { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -3250,7 +3278,7 @@ function togglePause() {
 }
 function toMenu() {
   state = S.MENU;
-  ["hud","pauseBtn","bombBtn","dashBtn","bossBar","gameover","pauseOverlay","hangar","help","achievs","shop","storyIntro","storyBeat","vsSelect","settings","checkinPage"].forEach(id => $(id).classList.add("hidden"));
+  ["hud","pauseBtn","bombBtn","dashBtn","bossBar","gameover","pauseOverlay","hangar","help","achievs","shop","storyIntro","storyBeat","vsSelect","settings","checkinPage","shareView"].forEach(id => $(id).classList.add("hidden"));
   updateMenuStats();
   $("menu").classList.remove("hidden");
 }
@@ -3286,7 +3314,12 @@ $("vsBack").addEventListener("click", () => {
 });
 $("vsStartBtn").addEventListener("click", () => startGame("versus"));
 $("retryBtn").addEventListener("click", () => startGame(mode));
-$("shareBtn").addEventListener("click", shareCard);
+$("shareBtn").addEventListener("click", openShareView);
+$("shareSaveBtn").addEventListener("click", saveShareCard);
+$("shareBack").addEventListener("click", () => {
+  $("shareView").classList.add("hidden");
+  $("gameover").classList.remove("hidden");
+});
 $("shopBtn").addEventListener("click", () => {
   $("menu").classList.add("hidden");
   buildShop();
@@ -3410,7 +3443,7 @@ const EN_HELP = `
       <b>Coins:</b> each run pays score÷100 + boss kills×25 coins; spend them in the shop on themed ships and permanent upgrades.<br>
       <b>Daily check-in:</b> click the check-in card on the main menu and claim your reward (coins grow each day); a 7-day streak unlocks the hidden ship AURUM. Launched the game but forgot to claim? You can <b>make it up later</b> without breaking the streak; days you never launched can't be made up — the streak restarts at day 1.<br>
       <b>Drone:</b> buy the Co-processor Drone in the shop — an orbiting wingman with auto-aim fire; ♬ ships carry two.<br>
-      <b>Score card:</b> hit SHARE on the results screen to generate a PCB-styled score card image (with grade) to save and share.<br><br>
+      <b>Score card:</b> hit SHARE on the results screen to preview a PCB-styled score card (with grade); long-press / right-click the image or use the save button to share.<br><br>
       <span class="r">A boss appears every 5 waves, rotating three forms: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts).</span><br><br>
       Unlock new ships in the hangar: every ship has a unique perk, bullets are tinted to match the hull, and progress saves automatically.<br>
       Elite ships marked ♬ (AURUM / MIRROR CORE / REAPER / PRISM) carry their <b>own BGM</b> — equip one and even the menu music changes.<br>
