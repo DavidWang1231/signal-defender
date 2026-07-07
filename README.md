@@ -11,9 +11,10 @@ You are U1, the last arbitration core still awake on the motherboard. Late one n
 ## ✨ Features
 
 - **5 game modes**: Endless / Story (a 4-chapter mystery campaign) / Daily Challenge (one global seed + a daily modifier) / local 2-player Versus / achievement hunting
-- **18 playable ships**: unlocked via challenges, shop purchases, or achievement rewards; each ARSENAL-series ship carries a unique weapon (homing missiles, piercing lance, heavy cannon, serpentine wave shot, twin shot)
+- **23 playable ships**: unlocked via challenges, shop purchases, achievement rewards, or a 7-day check-in streak; each ARSENAL-series ship carries a unique weapon (homing missiles, piercing lance, heavy cannon, serpentine wave shot, twin shot)
 - **3 rotating boss forms**: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts) — one boss every 5 waves, scaling across cycles
 - **Coin economy**: score converts to coins; the shop sells themed ships (star / sport / supercar series) and permanent upgrades
+- **Daily check-in**: opening the game checks you in automatically with growing coin rewards; a 7-day streak unlocks the hidden ship AURUM
 - **Synthesized audio**: background music and every sound effect are generated in real time with the Web Audio API — the BGM shifts automatically during boss fights; independent BGM/SFX volume controls
 - **i18n**: English / Chinese, auto-detected from the browser with an in-game toggle; the choice persists
 - **Mobile-friendly**: touch devices switch to one-finger drag + two-finger dash automatically; portrait and landscape both supported, notch-safe
@@ -24,12 +25,14 @@ You are U1, the last arbitration core still awake on the motherboard. Late one n
 
 | Platform | Move | Dash (i-frames) | EMP bomb |
 |---|---|---|---|
-| Desktop | WASD / arrows | Shift | B |
+| Desktop | WASD / arrows / mouse drag | Shift | B |
 | Mobile | one-finger drag | tap with a 2nd finger / bottom-left button | bottom-right button |
 | Versus P1 | WASD | Q | E |
 | Versus P2 | arrows | Shift | Enter |
 
-`P` pauses · auto-fire · ♪ button (top-right) toggles music · language button (top-left)
+`Space` / `P` pauses · auto-fire · ♪ button (top-right) toggles music · language button (top-left)
+
+> Mouse drag is razor-fast for wild, high-risk play; keyboard moves at a fixed speed for steady, precise dodging — pick your style.
 
 ## 🚀 Run locally
 

@@ -1,6 +1,6 @@
 # SIGNAL // 信号防线 — 项目说明
 
-PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 3.5**。中英双语（面向国外求职展示，英文为对外默认）。
+PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 3.6**。中英双语（面向国外求职展示，英文为对外默认）。
 
 ## 链接
 
@@ -30,7 +30,9 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 
 ## 代码结构速查（均在 index.html 的 script 内）
 
-- `SKINS[]` — 18 架战机: 条件解锁(unlock) / 商店(shop:{series,price}) / 奖励(reward)三类；perk 字段驱动特性
+- `SKINS[]` — 23 架战机: 条件解锁(unlock) / 商店(shop:{series,price}) / 奖励(reward)三类；perk 字段驱动特性；aurum 由签到解锁
+- 每日签到: `dailyCheckin()` 启动时自动执行,存 `save.checkin={last,streak}`,金币表 `CHECKIN_COINS`,连续 7 天解锁 aurum,之后每满 7 天送额外金币;结果经 `ckToday` 在主菜单展示
+- 暂停键: 空格或 P(togglePause 先 blur 焦点,防空格重复触发按钮)
 - `GUNS{}` — 武器系统: default/twin/homing/pierce/heavy/wave，经 `perk.gun` 绑定到战机；子弹由 `mkBullet()` 生成，支持 pierce/homing/wobble/dmg/shape
 - Boss 三形态: `spawnBoss()` 按 tier 轮换 core/thermal/glitch，各自 update 分支 + render 分支
 - `ACH[]` — 13 成就，带 reward(coins/skin)；`checkAch()` 局内每秒 + 结算时跑

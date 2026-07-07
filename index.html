@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SIGNAL // 信号防线 REV 3.5</title>
+<title>SIGNAL // 信号防线 REV 3.6</title>
 <style>
   :root {
     --bg: #06231a;
@@ -242,7 +242,7 @@
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <button id="langBtn" class="ctl" style="top:12px;left:12px;font-size:12px;padding:7px 12px;z-index:11">EN</button>
-    <div class="refdes">REV 3.5 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
+    <div class="refdes">REV 3.6 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
     <div class="brand">SIGNAL</div>
     <div class="brand-sub" data-en="D E F E N D E R">信 号 防 线</div>
     <div class="menu-btns">
@@ -280,7 +280,8 @@
       <b>手机操作:</b> 单指在屏幕任意位置拖动即可移动(飞机不会被手指挡住);拖动时用<b>第二根手指点一下屏幕 = 冲刺</b>;左下按钮冲刺、右下按钮 EMP。横屏竖屏均可,旋转后自动适配。<br>
       <b>冲刺:</b> Shift 或左下按钮 · 冲刺期间无敌<br>
       <b>EMP炸弹:</b> B 键或右下按钮 · 清屏 + 重创Boss<br>
-      <b>暂停:</b> P<br><br>
+      <b>暂停:</b> 空格 或 P<br>
+      <b>操控手感:</b> 鼠标/触屏拖动响应极快,适合追求极限走位;键盘是固定速度,更稳更精准。想刺激用鼠标,想稳健用键盘。<br><br>
       <b>每日挑战:</b> 每天一个固定种子 + 当日修饰词(敌速/刷怪/生命等变化),成绩单独记录。<br>
       <b>主线剧情:</b> 跟随信号防线的故事推进,每击败一种 Boss 形态解锁一段剧情。<br>
       <b>双人对战:</b> 开局前各自在已解锁飞船中选择座机。同屏共享敌潮比得分。P1 = WASD + <b>Q</b>冲刺 + <b>E</b>炸弹;P2 = 方向键 + <b>Shift</b>冲刺 + <b>Enter</b>炸弹。对战中皮肤特性不生效,仅外观不同。<br>
@@ -294,7 +295,8 @@
       <b>×2</b> 得分翻倍 10s<br><br>
       短路团(红色八边形)掉率 50%,炮台 30%,是刷道具的主要来源。<br>
       <b>擦弹:</b>敌弹贴着飞船掠过而不命中,可得少量分数,高手向操作。<br>
-      <b>金币:</b>每局结算获得 得分÷100 + Boss击杀×25 金币,商店可购买主题皮肤和永久强化。<br><br>
+      <b>金币:</b>每局结算获得 得分÷100 + Boss击杀×25 金币,商店可购买主题皮肤和永久强化。<br>
+      <b>每日签到:</b>每天打开游戏自动签到并送金币(逐日递增),连续 7 天解锁隐藏战机 AURUM;中断则从第 1 天重新累计。<br><br>
       <span class="r">每 5 波出现 Boss,三种形态轮换:短路核心(弹环+激光扫射)、热失控(螺旋弹幕)、时钟毛刺(瞬移爆发)。</span><br><br>
       在机库解锁新皮肤:每个皮肤有专属特性,解锁进度自动保存。<br>
       <b>军械库 ARSENAL</b> 系列战机各配一种独特武器:双管、追踪导弹、贯穿弹、重炮、蛇形波动弹——手感各不相同,可在商店购买。
@@ -901,6 +903,30 @@ const SKINS = [
     },
   },
   {
+    id: "aurum", name: T("AURUM 鎏金", "AURUM"), trailColor: "#ffd700",
+    perkText: T("得分 +20% · 射速 +18% · 道具吸取 +20", "Score +20% · fire rate +18% · magnet +20"),
+    reward: { text: T("连续签到 7 天解锁", "Check in 7 days in a row") },
+    perk: { scoreMult: 1.2, fireMult: 0.85, magnet: 20 },
+    draw(g) {
+      const t = performance.now() / 1000;
+      const shine = 0.6 + Math.sin(t * 3) * 0.4;
+      g.strokeStyle = "#ffd700"; g.fillStyle = "rgba(255,215,0,0.18)";
+      g.shadowColor = "#ffd700"; g.shadowBlur = 12 + shine * 8; g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(0,-18); g.lineTo(5,-8); g.lineTo(14,2); g.lineTo(9,4); g.lineTo(11,13);
+      g.lineTo(4,8); g.lineTo(0,12); g.lineTo(-4,8); g.lineTo(-11,13); g.lineTo(-9,4);
+      g.lineTo(-14,2); g.lineTo(-5,-8);
+      g.closePath(); g.fill(); g.stroke();
+      g.shadowBlur = 0;
+      g.strokeStyle = "#fff8dc"; g.lineWidth = 1.2;
+      g.beginPath(); g.moveTo(0,-14); g.lineTo(0,8); g.stroke();
+      g.fillStyle = "#ffd700";
+      for (const s of [-1, 1]) { g.beginPath(); g.arc(s*7, -1, 1.5, 0, Math.PI*2); g.fill(); }
+      g.fillStyle = `rgba(255,255,255,${shine})`;
+      g.beginPath(); g.arc(0, -4, 2.2, 0, Math.PI*2); g.fill();
+    },
+  },
+  {
     id: "core", name: T("CORE 镜像核心", "MIRROR CORE"), trailColor: "#ff5252",
     perkText: T("开局携带 2 层护盾", "Start with 2 shield layers"),
     reward: { text: T("通关主线剧情解锁", "Clear the story mode") },
@@ -1145,11 +1171,34 @@ const DAILY_MODS = [
   { name: T("单点故障", "SINGLE POINT OF FAILURE"), desc: T("仅 1 条生命 / 得分 ×2", "1 life only / Score ×2"), lives: 1, scoreX: 2 },
   { name: T("过载供电", "OVERVOLT"), desc: T("射速 +35% / 敌人速度 +10%", "Fire rate +35% / Enemy speed +10%"), fire: 0.74, spd: 1.1 },
 ];
-function todayStr() {
-  const d = new Date();
+function dateStr(d) {
   return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 }
+function todayStr() { return dateStr(new Date()); }
 function todaySeed() { return Number(todayStr().replace(/-/g, "")); }
+
+// ============ 每日签到 ============
+const CHECKIN_COINS = [50, 75, 100, 150, 200, 300, 500];
+let ckToday = null; // 本次启动的签到结果,用于主菜单展示
+function dailyCheckin() {
+  const ds = todayStr();
+  if (!save.checkin) save.checkin = { last: "", streak: 0 };
+  const ck = save.checkin;
+  if (ck.last === ds) return;
+  const y = new Date(); y.setDate(y.getDate() - 1);
+  ck.streak = ck.last === dateStr(y) ? ck.streak + 1 : 1;
+  ck.last = ds;
+  const day = ((ck.streak - 1) % 7) + 1;
+  let coins = CHECKIN_COINS[day - 1], ship = false;
+  if (day === 7) {
+    save.owned = save.owned || [];
+    if (!save.owned.includes("aurum")) { save.owned.push("aurum"); ship = true; }
+    else coins += 300; // 已拥有 AURUM 后,每满 7 天改送额外金币
+  }
+  save.coins = (save.coins || 0) + coins;
+  ckToday = { day, coins, ship };
+  persist();
+}
 
 // ============ 成就 ============
 const ACH = [
@@ -1413,7 +1462,7 @@ const keys = {};
 window.addEventListener("keydown", e => {
   const k = e.key.toLowerCase();
   keys[k] = true;
-  if (k === "p" && (state === S.PLAY || state === S.PAUSE)) togglePause();
+  if ((k === "p" || k === " ") && (state === S.PLAY || state === S.PAUSE)) togglePause();
   if (state === S.PLAY) {
     if (mode === "versus") {
       if (k === "q") doDash(players[0]);
@@ -2656,6 +2705,8 @@ function updateMenuStats() {
     `${T("历史最佳", "BEST")} <b>${save.best.score.toLocaleString()}</b> · ${T("最远波次", "MAX WAVE")} <b>${save.best.wave}</b> · ${T("Boss 击杀", "BOSSES")} <b>${save.totalBoss}</b><br>` +
     `${T("累计击杀", "TOTAL KILLS")} <b>${save.totalKills.toLocaleString()}</b> · ${T("成就", "TROPHIES")} <b>${achN}/${ACH.length}</b> · ${T("金币", "COINS")} <b>${(save.coins || 0).toLocaleString()} ¤</b><br>` +
     `${T("今日挑战", "DAILY")}[${mod.name}${T(":", ": ")}${mod.desc}] ${T("最佳", "BEST")} <b>${save.daily.date === ds ? save.daily.score.toLocaleString() : T("未挑战", "not played")}</b><br>` +
+    `${T("每日签到", "CHECK-IN")} <b>DAY ${save.checkin && save.checkin.last === ds ? ((save.checkin.streak - 1) % 7) + 1 : 0}/7</b>` +
+    (ckToday ? ` <span style='color:var(--green)'>+${ckToday.coins} ¤${ckToday.ship ? " · " + T("★ 解锁隐藏战机 AURUM!", "★ HIDDEN SHIP AURUM UNLOCKED!") : ""}</span>` : "") + `<br>` +
     `${T("主线进度", "STORY")} <b>${save.storyProgress || 0}/${STORY_FINAL_TIER}</b>${save.storyDone ? " <span style='color:var(--green)'>" + T("✓已通关", "✓CLEARED") + "</span>" : ""}<br>` +
     `${T("皮肤", "SHIPS")} <b>${unlockedCount}/${SKINS.length}</b> · ${T("当前载体", "CURRENT")} <b>${curSkin().name}</b>` +
     (hasStorage ? "" : "<br><span style='color:var(--fault)'>" + T("⚠ 当前环境不支持存档,进度仅本次有效", "⚠ Storage unavailable — progress lasts this session only") + "</span>");
@@ -2783,6 +2834,8 @@ function gameOver() {
   $("gameover").classList.remove("hidden");
 }
 function togglePause() {
+  // 防止空格触发仍持有焦点的按钮,造成暂停被立刻取消
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   if (state === S.PLAY) {
     state = S.PAUSE;
     $("pauseOverlay").classList.remove("hidden");
@@ -2917,7 +2970,8 @@ const EN_HELP = `
       <b>Touch controls:</b> drag anywhere with one finger to move (your ship never hides under your finger); while dragging, <b>tap with a second finger = dash</b>; bottom-left button dashes, bottom-right fires the EMP. Portrait and landscape both work.<br>
       <b>Dash:</b> Shift or bottom-left button · invulnerable while dashing<br>
       <b>EMP bomb:</b> B or bottom-right button · clears the screen + heavily damages the boss<br>
-      <b>Pause:</b> P<br><br>
+      <b>Pause:</b> Space or P<br>
+      <b>Control feel:</b> mouse/touch drag is razor-fast — pick it for wild, high-risk play; keyboard moves at a fixed speed — steadier and more precise. Both are fully supported.<br><br>
       <b>Daily challenge:</b> one fixed seed per day plus a daily modifier (enemy speed / spawns / lives...); scores are tracked separately.<br>
       <b>Story mode:</b> follow the story of the signal defense line — each boss form defeated unlocks the next chapter.<br>
       <b>Versus:</b> both players pick from your unlocked ships. Shared enemy waves on one screen, highest score wins. P1 = WASD + <b>Q</b> dash + <b>E</b> bomb; P2 = arrows + <b>Shift</b> dash + <b>Enter</b> bomb. Skin perks are disabled in versus — looks only.<br>
@@ -2931,7 +2985,8 @@ const EN_HELP = `
       <b>×2</b> double score 10s<br><br>
       Short-circuit clusters (red octagons) drop power-ups 50% of the time, turrets 30% — your main supply line.<br>
       <b>Grazing:</b> let enemy bullets skim past your hull without hitting for bonus points. High-skill play.<br>
-      <b>Coins:</b> each run pays score÷100 + boss kills×25 coins; spend them in the shop on themed ships and permanent upgrades.<br><br>
+      <b>Coins:</b> each run pays score÷100 + boss kills×25 coins; spend them in the shop on themed ships and permanent upgrades.<br>
+      <b>Daily check-in:</b> opening the game checks you in automatically and pays coins (growing each day); a 7-day streak unlocks the hidden ship AURUM. Miss a day and the streak restarts.<br><br>
       <span class="r">A boss appears every 5 waves, rotating three forms: Short-Circuit Core (bullet rings + laser sweep), Thermal Runaway (spiral barrage), Clock Glitch (teleport bursts).</span><br><br>
       Unlock new ships in the hangar: every ship has a unique perk, and progress saves automatically.<br>
       The <b>ARSENAL</b> series each carries a unique weapon: twin shot, homing missiles, piercing lance, heavy cannon, serpentine wave — all in the shop.
@@ -2940,7 +2995,7 @@ function applyLangDom() {
   $("langBtn").textContent = LANG === "zh" ? "EN" : "中文";
   if (LANG !== "en") return;
   document.documentElement.lang = "en";
-  document.title = "SIGNAL DEFENDER REV 3.5";
+  document.title = "SIGNAL DEFENDER REV 3.6";
   document.querySelectorAll("[data-en]").forEach(el => { el.innerHTML = el.dataset.en; });
   $("helpText").innerHTML = EN_HELP;
 }
@@ -2956,6 +3011,7 @@ loadSave().then(() => {
   applyTheme();
   bgmOn = save.bgm !== false;
   updateMuteBtn();
+  dailyCheckin();
   updateMenuStats();
 });
 updateMenuStats();
