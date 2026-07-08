@@ -312,7 +312,7 @@
       <button class="btn" id="startBtn" data-en="POWER ON // ENDLESS">POWER ON // 开始</button>
       <button class="btn" id="storyBtn" data-en="STORY // CAMPAIGN">STORY // 主线剧情</button>
       <button class="btn" id="dailyBtn" data-en="DAILY // CHALLENGE">DAILY // 每日挑战</button>
-      <button class="btn" id="rushBtn" data-en="RUSH // BOSS GAUNTLET">RUSH // Boss 连战</button>
+      <button class="btn" id="rushBtn" data-en="BOSS // RUSH">BOSS // 狂潮</button>
       <button class="btn" id="versusBtn" data-en="VERSUS // 2P LOCAL">VERSUS // 双人对战</button>
       <button class="btn ghostbtn" id="shopBtn" data-en="SHOP">SHOP // 商店</button>
       <button class="btn ghostbtn" id="hangarBtn" data-en="HANGAR">HANGAR // 机库</button>
@@ -348,7 +348,7 @@
       <b>操控手感:</b> 鼠标/触屏拖动响应极快,适合追求极限走位;键盘是固定速度,更稳更精准。想刺激用鼠标,想稳健用键盘。<br><br>
       <b>每日挑战:</b> 每天一个固定种子 + 当日修饰词(敌速/刷怪/生命等变化),成绩单独记录。<br>
       <b>主线剧情:</b> 跟随信号防线的故事推进,每击败一种 Boss 形态解锁一段剧情并自动存档;可在选章界面从已通关的任意章节继续。<br>
-      <b>Boss 连战:</b> 跳过小怪,三形态 Boss 车轮战,比谁杀得多、活得久,成绩单独记录。<br>
+      <b>Boss 狂潮:</b> 跳过小怪,三形态 Boss 一波接一波连打,比谁杀得多、活得久,成绩单独记录。<br>
       <b>随机事件:</b> 战斗中随机降临限时事件——⚡供电过载(敌速+50%/得分×2)、💰数据雨(补给金币空投)、🌑总线静默(清弹减速)、🧲磁暴(道具自动吸附)。<br>
       <b>双人对战:</b> 开局前各自在已解锁飞船中选择座机。同屏共享敌潮比得分。P1 = WASD + <b>Q</b>冲刺 + <b>E</b>炸弹;P2 = 方向键 + <b>Shift</b>冲刺 + <b>Enter</b>炸弹。对战中皮肤特性不生效,仅外观不同。<br>
       <b>音乐:</b> 右上角 ♪ 按钮开关背景音乐。<br><br>
@@ -1287,7 +1287,7 @@ function todayStr() { return dateStr(new Date()); }
 function todaySeed() { return Number(todayStr().replace(/-/g, "")); }
 
 // ============ 局内随机事件 ============
-// 非 Boss 波随机触发限时事件(对战/Boss连战不触发);每日挑战走种子 rng 保持全球一致
+// 非 Boss 波随机触发限时事件(对战/Boss狂潮不触发);每日挑战走种子 rng 保持全球一致
 const EVENTS = [
   { id: "overload", name: T("⚡ 供电过载", "⚡ OVERVOLT"),     desc: T("敌人加速 · 得分 ×2", "enemies faster · score ×2"),  dur: 10, color: "#ffb066" },
   { id: "datarain", name: T("💰 数据雨", "💰 DATA RAIN"),      desc: T("补给空投中", "supplies inbound"),                    dur: 8,  color: "#e6c15a" },
@@ -1552,6 +1552,11 @@ function drawBoard() {
 
 // ============ 状态 ============
 const S = { MENU: 0, PLAY: 1, PAUSE: 2, OVER: 3, STORY: 4 };
+// ============ 调试模式(仅测试用) ============
+// 通过 index.html?debug=1 或 URL 末尾 #debug 开启;普通玩家看不到。
+// debug.html 是一个重定向到本页 ?debug=1 的入口,双击即进测试版。
+const DEBUG = /[?&]debug/.test(location.search) || /debug/.test(location.hash);
+const dbg = { god: false };
 let state = S.MENU;
 let mode = "normal"; // normal | daily | versus
 let wave = 1, bossKills = 0;
@@ -1701,8 +1706,9 @@ function diff() {
   const spd = ((dailyMod && dailyMod.spd) || 1) * evs;
   const spm = ((dailyMod && dailyMod.spawn) || 1) * (mode === "versus" ? 0.7 : 1);
   return {
-    speed: (1 + w * 0.11) * spd,
-    spawn: Math.max(0.15, (0.85 - w * 0.055) * spm),
+    speed: Math.min(2.7, 1 + w * 0.09) * spd,
+    spawn: Math.max(0.26, (0.9 - w * 0.045) * spm),
+    cap: Math.min(26, 14 + w),
     spikeCap: (210 + w * 16) * spd,
     shooterChance: w >= 2 ? Math.min(0.22, 0.06 + w * 0.02) : 0,
     sideSpawn: w >= 4,
@@ -1830,7 +1836,7 @@ function updateBoss(dt) {
     b.y = b.ty + Math.sin(b.t * 1.2) * 10;
     b.patT -= dt;
     if (b.patT <= 0) {
-      b.patT = Math.max(1.1, 2.1 - b.tier * 0.08 - ph * 0.15);
+      b.patT = Math.max(1.7, 2.5 - b.tier * 0.06 - ph * 0.12);
       const ox = b.x, oy = b.y;
       boom(ox, oy, C.shield, 16, 220);
       b.x = 60 + rng() * (W - 120);
@@ -1956,7 +1962,7 @@ function damageBoss(dmg, x, y, byP) {
     spawnPowerup(b.x + 30, b.y);
     document.getElementById("bossBar").classList.add("hidden");
     wave++; waveTimer = 0; waveBanner = 2; bannerText = T(`WAVE ${wave} // 第 ${wave} 波`, `WAVE ${wave}`);
-    if (mode === "rush") wave += 4; // 连战模式直接跳到下一个 Boss 波
+    if (mode === "rush") wave += 4; // 狂潮模式直接跳到下一个 Boss 波
     SFX.wave();
     if (mode === "story" && STORY_BEATS[b.tier]) showStoryBeat(b.tier);
   }
@@ -1994,6 +2000,7 @@ function useBomb(p) {
   updateHUD();
 }
 function hurtPlayer(p) {
+  if (dbg.god) return;
   if (p.invuln > 0) return;
   if (p.shield > 0) {
     p.shield--;
@@ -2023,6 +2030,7 @@ function loop(t) {
   last = t;
   if (state === S.PLAY) update(dt);
   render();
+  if (DEBUG) dbgTick();
   const previewOpen = ["hangar","shop","vsSelect","checkinPage"].some(id => !document.getElementById(id).classList.contains("hidden"));
   if (previewOpen) {
     for (const p of livePreviews) drawSkinPreview(p.cv, p.sk);
@@ -2134,7 +2142,7 @@ function update(dt) {
       if (!isBossWave(wave)) SFX.wave();
     }
     spawnTimer -= dt;
-    if (spawnTimer <= 0) { spawnTimer = D.spawn; spawnEnemy(); }
+    if (spawnTimer <= 0) { spawnTimer = D.spawn; if (enemies.length < D.cap) spawnEnemy(); }
   }
   if (waveBanner > 0) waveBanner -= dt;
   if (boss) updateBoss(dt);
@@ -3175,7 +3183,7 @@ function gameOver() {
     if (save.daily.date !== ds) save.daily = { date: ds, score: 0 };
     save.daily.score = Math.max(save.daily.score, p1.score);
   } else if (mode === "rush") {
-    // 连战成绩单独记录,波次跳跃不计入无尽最佳
+    // 狂潮成绩单独记录,波次跳跃不计入无尽最佳
     if (!save.rush || bossKills > save.rush.boss) save.rush = { boss: bossKills, time: Math.round(rushTime) };
   } else {
     save.best.score = Math.max(save.best.score, p1.score);
@@ -3196,7 +3204,7 @@ function gameOver() {
   $("finalWave").textContent = wave;
   $("finalCombo").textContent = p1.maxCombo;
   $("finalBoss").textContent = bossKills;
-  $("bestLabel").textContent = mode === "daily" ? T("今日挑战最佳", "DAILY BEST") : mode === "rush" ? T("连战最佳", "RUSH BEST") : T("历史最佳", "BEST");
+  $("bestLabel").textContent = mode === "daily" ? T("今日挑战最佳", "DAILY BEST") : mode === "rush" ? T("狂潮最佳", "RUSH BEST") : T("历史最佳", "BEST");
   $("bestScore").textContent = mode === "daily" ? save.daily.score.toLocaleString()
     : mode === "rush" ? `${save.rush.boss} BOSS · ${Math.floor(save.rush.time / 60)}:${String(save.rush.time % 60).padStart(2, "0")}`
     : save.best.score.toLocaleString();
@@ -3503,7 +3511,7 @@ const EN_HELP = `
       <b>Control feel:</b> mouse/touch drag is razor-fast — pick it for wild, high-risk play; keyboard moves at a fixed speed — steadier and more precise. Both are fully supported.<br><br>
       <b>Daily challenge:</b> one fixed seed per day plus a daily modifier (enemy speed / spawns / lives...); scores are tracked separately.<br>
       <b>Story mode:</b> follow the story of the signal defense line — each boss form defeated unlocks the next chapter and auto-saves; resume from any cleared chapter on the select screen.<br>
-      <b>Boss Rush:</b> skip the fodder — a gauntlet of the three boss forms back to back; kills and time tracked separately.<br>
+      <b>Boss Rush:</b> skip the fodder — fight all three boss forms back to back, wave after wave; kills and time tracked separately.<br>
       <b>Random events:</b> timed events strike mid-run — ⚡ Overvolt (enemies +50% speed / score ×2), 💰 Data Rain (supply &amp; coin drops), 🌑 Bus Silence (bullets purged, slow-mo), 🧲 Magnet Storm (loot flies to you).<br>
       <b>Versus:</b> both players pick from your unlocked ships. Shared enemy waves on one screen, highest score wins. P1 = WASD + <b>Q</b> dash + <b>E</b> bomb; P2 = arrows + <b>Shift</b> dash + <b>Enter</b> bomb. Skin perks are disabled in versus — looks only.<br>
       <b>Music:</b> the ♪ button in the top-right toggles background music.<br><br>
@@ -3538,6 +3546,80 @@ $("langBtn").addEventListener("click", () => {
   location.reload();
 });
 
+// ============ 调试面板(仅 DEBUG 开启时构建) ============
+let dbgHdr = null;
+function dbgGoto(n) {
+  if (!players.length) return;
+  wave = Math.max(1, n | 0);
+  waveTimer = 0; spawnTimer = 0.6;
+  enemies = []; ebullets = []; bullets = []; boss = null;
+  waveBanner = 2;
+  bannerText = isBossWave(wave) ? "!! BOSS INCOMING !!" : T(`WAVE ${wave} // 第 ${wave} 波`, `WAVE ${wave}`);
+  if (state === S.OVER) dbgRevive();
+  updateHUD();
+}
+function dbgNextBoss() { dbgGoto((Math.floor(wave / 5) + 1) * 5); }
+function dbgRevive() {
+  if (!players.length) return;
+  for (const p of players) { p.alive = true; p.lives = maxLivesFn(); p.invuln = 2.5; p.shield = Math.max(p.shield, 1); }
+  if (state === S.OVER) {
+    $("gameover").classList.add("hidden");
+    ["hud","pauseBtn"].forEach(id => $(id).classList.remove("hidden"));
+    ["bombBtn","dashBtn"].forEach(id => $(id).classList.toggle("hidden", mode === "versus"));
+    if (boss) $("bossBar").classList.remove("hidden");
+    state = S.PLAY; last = performance.now();
+  }
+  updateHUD();
+}
+function dbgKillBoss() { if (boss) damageBoss(boss.hp + 1, boss.x, boss.y, players[0]); }
+function dbgClear() { enemies = []; ebullets = []; }
+function dbgCoins(n) { save.coins = (save.coins || 0) + n; persist(); updateHUD(); updateMenuStats(); }
+function dbgTick() {
+  if (!dbgHdr) return;
+  const p = players[0];
+  dbgHdr.textContent = `W${wave}${isBossWave(wave) ? "★" : ""}  ${boss ? "BOSS " + Math.max(0, boss.hp | 0) : ""}  ${p ? "♥" + p.lives : ""}  GOD:${dbg.god ? "ON" : "off"}`;
+}
+function initDebug() {
+  const panel = document.createElement("div");
+  panel.id = "dbgPanel";
+  panel.style.cssText = "position:fixed;top:6px;left:6px;z-index:99999;background:rgba(4,12,10,0.88);border:1px solid #1f7a5a;border-radius:6px;padding:6px;font:11px/1.4 ui-monospace,monospace;color:#9fe;max-width:172px;user-select:none";
+  dbgHdr = document.createElement("div");
+  dbgHdr.style.cssText = "color:#5fd;margin-bottom:5px;letter-spacing:.5px;white-space:nowrap;overflow:hidden";
+  dbgHdr.textContent = "DEBUG";
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "display:flex;flex-wrap:wrap;gap:3px";
+  const defs = [
+    ["GOD", () => { dbg.god = !dbg.god; if (dbg.god && players[0]) for (const p of players) p.invuln = Math.max(p.invuln, 1); }],
+    ["REVIVE", dbgRevive],
+    ["KILL BOSS", dbgKillBoss],
+    ["CLEAR", dbgClear],
+    ["WAVE -1", () => dbgGoto(wave - 1)],
+    ["WAVE +1", () => dbgGoto(wave + 1)],
+    ["WAVE +5", () => dbgGoto(wave + 5)],
+    ["→ BOSS", dbgNextBoss],
+    ["W10", () => dbgGoto(10)],
+    ["W15", () => dbgGoto(15)],
+    ["W20", () => dbgGoto(20)],
+    ["W30", () => dbgGoto(30)],
+    ["+1000¤", () => dbgCoins(1000)],
+  ];
+  for (const [label, fn] of defs) {
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.style.cssText = "flex:1 1 46%;background:#0a2b22;color:#8fe;border:1px solid #1f7a5a;border-radius:4px;padding:4px 3px;font:11px ui-monospace,monospace;cursor:pointer";
+    b.addEventListener("click", () => { fn(); b.blur(); });
+    wrap.appendChild(b);
+  }
+  const hint = document.createElement("div");
+  hint.style.cssText = "margin-top:5px;color:#476;font-size:10px";
+  hint.textContent = "` 隐藏/显示";
+  panel.appendChild(dbgHdr); panel.appendChild(wrap); panel.appendChild(hint);
+  document.body.appendChild(panel);
+  addEventListener("keydown", (e) => {
+    if (e.key === "`" || e.key === "~") panel.style.display = panel.style.display === "none" ? "" : "none";
+  });
+}
+
 // ============ 启动 ============
 resize();
 applyLangDom();
@@ -3551,6 +3633,7 @@ loadSave().then(() => {
   if (pendingCheckins().length) openCheckin();
 });
 updateMenuStats();
+if (DEBUG) initDebug();
 requestAnimationFrame(loop);
 })();
 </script>

@@ -45,8 +45,9 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 - 签到 UI: 主菜单 `#checkinCard` 卡片(7 菱形进度点)，`updateCheckinCard()` 随 updateMenuStats 刷新
 - 存档: localStorage 键 `signal_save_v3`，`save` 对象 Object.assign 合并保证旧档兼容
 - 移动端: `IS_MOBILE` 检测(pointer:coarse)，单指拖动+双指点按冲刺，`@media (pointer:coarse)` 样式块
-- 随机事件: `EVENTS[]` 4 种(overload/datarain/silence/magnet)，`runEvent`/`runEventT` 调度(非 Boss 波、非对战/连战)；效果钩子在 diff()(速度)、scoreMult()(×2)、powerups 循环(磁吸)、render()(边框光晕/暗幕)；datarain 掉 coin 道具(+5 进 runCoins，结算并入金币)
-- Boss 连战: mode="rush"，wave 从 5 起、damageBoss 后 +4 跳到下个 Boss 波；`rushTime` 计时，HUD 右侧显示 TIME；成绩存 `save.rush={boss,time}`，不写 best.score/best.wave，wave 类成就已排除 rush
+- 随机事件: `EVENTS[]` 4 种(overload/datarain/silence/magnet)，`runEvent`/`runEventT` 调度(非 Boss 波、非对战/狂潮)；效果钩子在 diff()(速度)、scoreMult()(×2)、powerups 循环(磁吸)、render()(边框光晕/暗幕)；datarain 掉 coin 道具(+5 进 runCoins，结算并入金币)
+- 调试版(仅测试): `DEBUG` 开关(URL `?debug=1` 或 `#debug`)在启动时 `initDebug()` 建左上角悬浮面板——GOD(无敌,`hurtPlayer` 里 `dbg.god` 拦截)/REVIVE(满命复活,含结算后)/KILL BOSS/CLEAR/跳关(WAVE±/→BOSS/W10-30)/+1000¤;`dbgGoto()` 清场重置波次(boss=null 让主循环按 tier 重生)。根目录 `debug.html` 只是重定向到 `index.html?debug=1` 的双击入口,不含游戏代码,普通玩家 `index.html` 不受影响
+- Boss 狂潮(BOSS RUSH): mode="rush"，wave 从 5 起、damageBoss 后 +4 跳到下个 Boss 波；`rushTime` 计时，HUD 右侧显示 TIME；成绩存 `save.rush={boss,time}`，不写 best.score/best.wave，wave 类成就已排除 rush
 - 无人机: 商店 upg `drone`(1200¤)，startGame 里 `p.drones = SKIN_BGM[skin]?2:1`，环绕 42px 自动瞄准射击(update/render 各一段)
 - 成绩卡: `buildShareCard()` 离屏 canvas 生成 PCB 风格 PNG(评级 `scoreGrade()`)；结算点 shareBtn → `openShareView()` 打开预览页 `#shareView`(图片可长按/右键保存)，`saveShareCard()` 优先 navigator.share 否则下载；对战模式隐藏 shareBtn
 
