@@ -1,6 +1,6 @@
 # SIGNAL // 信号防线 — 项目说明
 
-PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 4.1**。中英双语（面向国外求职展示，英文为对外默认）。
+PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 4.2**。中英双语（面向国外求职展示，英文为对外默认）。
 
 ## 链接
 
@@ -16,7 +16,7 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 
 1. 改 `index.html`
 2. 语法自检: 提取 `<script>` 内容后 `node --check`（无测试框架，靠这个 + 浏览器实测）
-3. 版本号在三处: `<title>`、主菜单 `.refdes`、以及英文模式 `applyLangDom()` 里的 `document.title`（格式 REV x.y），bump 时三处同步
+3. 版本号在四处: `<title>`、主菜单 `.refdes`、成绩卡 `buildShareCard()` 的 `g.fillText`、以及英文模式 `applyLangDom()` 里的 `document.title`（格式 REV x.y），bump 时四处同步
 4. `git commit` + `git push` → Pages 约 1 分钟自动更新
 5. 大版本再打 tag + `gh release create`
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SIGNAL // 信号防线 REV 4.1</title>
+<title>SIGNAL // 信号防线 REV 4.2</title>
 <style>
   :root {
     --bg: #06231a;
@@ -304,7 +304,7 @@
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <button id="langBtn" class="ctl" style="top:12px;left:12px;font-size:12px;padding:7px 12px;z-index:11">EN</button>
-    <div class="refdes">REV 4.1 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
+    <div class="refdes">REV 4.2 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
     <div class="brand">SIGNAL</div>
     <div class="brand-sub" data-en="D E F E N D E R">信 号 防 线</div>
     <div id="checkinCard"></div>
@@ -3263,7 +3263,7 @@ function buildShareCard() {
   g.font = "10px monospace"; g.fillStyle = "rgba(233,228,212,0.5)"; g.textAlign = "left";
   g.fillText("U1 · DO NOT SHORT", 26, 32);
   g.textAlign = "right";
-  g.fillText(todayStr() + " · REV 4.1", Wc - 26, 32);
+  g.fillText(todayStr() + " · REV 4.2", Wc - 26, 32);
   // 标题
   g.textAlign = "left";
   g.fillStyle = C.copper;
@@ -3537,7 +3537,7 @@ function applyLangDom() {
   $("langBtn").textContent = LANG === "zh" ? "EN" : "中文";
   if (LANG !== "en") return;
   document.documentElement.lang = "en";
-  document.title = "SIGNAL DEFENDER REV 4.1";
+  document.title = "SIGNAL DEFENDER REV 4.2";
   document.querySelectorAll("[data-en]").forEach(el => { el.innerHTML = el.dataset.en; });
   $("helpText").innerHTML = EN_HELP;
 }
