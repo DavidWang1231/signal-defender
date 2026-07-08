@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SIGNAL // 信号防线 REV 4.0</title>
+<title>SIGNAL // 信号防线 REV 4.1</title>
 <style>
   :root {
     --bg: #06231a;
@@ -304,7 +304,7 @@
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <button id="langBtn" class="ctl" style="top:12px;left:12px;font-size:12px;padding:7px 12px;z-index:11">EN</button>
-    <div class="refdes">REV 4.0 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
+    <div class="refdes">REV 4.1 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
     <div class="brand">SIGNAL</div>
     <div class="brand-sub" data-en="D E F E N D E R">信 号 防 线</div>
     <div id="checkinCard"></div>
@@ -347,7 +347,7 @@
       <b>暂停:</b> 空格 或 P<br>
       <b>操控手感:</b> 鼠标/触屏拖动响应极快,适合追求极限走位;键盘是固定速度,更稳更精准。想刺激用鼠标,想稳健用键盘。<br><br>
       <b>每日挑战:</b> 每天一个固定种子 + 当日修饰词(敌速/刷怪/生命等变化),成绩单独记录。<br>
-      <b>主线剧情:</b> 跟随信号防线的故事推进,每击败一种 Boss 形态解锁一段剧情。<br>
+      <b>主线剧情:</b> 跟随信号防线的故事推进,每击败一种 Boss 形态解锁一段剧情并自动存档;可在选章界面从已通关的任意章节继续。<br>
       <b>Boss 连战:</b> 跳过小怪,三形态 Boss 车轮战,比谁杀得多、活得久,成绩单独记录。<br>
       <b>随机事件:</b> 战斗中随机降临限时事件——⚡供电过载(敌速+50%/得分×2)、💰数据雨(补给金币空投)、🌑总线静默(清弹减速)、🧲磁暴(道具自动吸附)。<br>
       <b>双人对战:</b> 开局前各自在已解锁飞船中选择座机。同屏共享敌潮比得分。P1 = WASD + <b>Q</b>冲刺 + <b>E</b>炸弹;P2 = 方向键 + <b>Shift</b>冲刺 + <b>Enter</b>炸弹。对战中皮肤特性不生效,仅外观不同。<br>
@@ -404,6 +404,15 @@
     <button class="btn" id="ckClaimBtn" style="min-width:280px"></button>
     <div style="height:12px"></div>
     <button class="btn ghostbtn" id="checkinBack" data-en="BACK">BACK // 返回</button>
+  </div>
+
+  <!-- 剧情:选章 -->
+  <div id="storySelect" class="overlay hidden">
+    <div class="refdes" data-en="STORY MODE">STORY MODE // 主线剧情</div>
+    <div class="hangar-title" data-en="SELECT CHAPTER">SELECT CHAPTER // 选择章节</div>
+    <div id="storyProgLine" class="refdes" style="margin:6px 0 4px"></div>
+    <div id="storyChapters" class="cards" style="margin:14px 0"></div>
+    <button class="btn ghostbtn" id="storySelBack" data-en="BACK">BACK // 返回</button>
   </div>
 
   <!-- 剧情:序幕 -->
@@ -1426,6 +1435,16 @@ const STORY_BEATS = {
     ["ops", T("回家吧,U1。信号防线——任务完成。", "Come home, U1. Signal defense line — mission complete.")],
   ]},
 };
+// 章节:每章 = 一场 Boss 战 + 战后过场;wave 为进入时的起始波(5N-4,预留 4 波热身)
+// intro 为进入时展示的过场序号(第 1 章=序章 0,之后各章=上一章战后对白,作为剧情回顾)
+const STORY_CHAPTERS = [
+  { ch: 1, wave: 1,  intro: 0, label: T("第一章 · 序章", "CHAPTER 1 · PROLOGUE"), name: T("短路核心", "SHORT-CIRCUIT CORE") },
+  { ch: 2, wave: 6,  intro: 1, label: T("第二章", "CHAPTER 2"),               name: T("热失控", "THERMAL RUNAWAY") },
+  { ch: 3, wave: 11, intro: 2, label: T("第三章", "CHAPTER 3"),               name: T("时钟毛刺", "CLOCK GLITCH") },
+  { ch: 4, wave: 16, intro: 3, label: T("终章", "FINALE"),                    name: T("镜像核心", "MIRROR CORE") },
+];
+let storyStartWave = 1;
+function chapterUnlocked(ch) { return (save.storyProgress || 0) >= ch - 1; }
 const STORY_STYLE = {
   sys:  { c: "var(--silk)",   p: "",         it: true  },
   ops:  { c: "var(--cyan)",   p: "OPS ▸ ",   it: false },
@@ -1439,10 +1458,39 @@ function renderStoryLines(lines) {
            (s.p ? `<b style="letter-spacing:0.1em">${s.p}</b>` : "") + text + `</div>`;
   }).join("");
 }
-function showStoryIntro() {
-  const b = STORY_BEATS[0];
+function buildStorySelect() {
+  const prog = save.storyProgress || 0;
+  $("storyProgLine").innerHTML = save.storyDone
+    ? "<span style='color:var(--green)'>" + T("✓ 主线已通关 · 可自由重玩任意章节", "✓ CAMPAIGN CLEARED · replay any chapter") + "</span>"
+    : T(`进度 ${prog}/${STORY_FINAL_TIER} · 每通关一章自动存档`, `PROGRESS ${prog}/${STORY_FINAL_TIER} · each chapter auto-saves`);
+  const wrap = $("storyChapters");
+  wrap.innerHTML = "";
+  for (const c of STORY_CHAPTERS) {
+    const unlocked = chapterUnlocked(c.ch);
+    const cleared = prog >= c.ch;
+    const el = document.createElement("div");
+    el.className = "card" + (unlocked ? "" : " locked");
+    const status = cleared
+      ? "<span class='perk' style='color:var(--green)'>" + T("✓ 已通关", "✓ CLEARED") + "</span>"
+      : unlocked
+        ? "<span class='perk'>" + T("▸ 可进入", "▸ READY") + "</span>"
+        : "<span class='lock'>" + T("🔒 未解锁", "🔒 LOCKED") + "</span>";
+    el.innerHTML =
+      `<div class='cname' style='color:var(--gold)'>${c.label}</div>` +
+      `<div class='cdesc'>${c.name}<br>${status}</div>`;
+    if (unlocked) el.addEventListener("click", () => openStoryIntro(c));
+    wrap.appendChild(el);
+  }
+}
+function openStoryIntro(chapter) {
+  storyStartWave = chapter.wave;
+  showStoryIntro(chapter.intro);
+}
+function showStoryIntro(introTier) {
+  const b = STORY_BEATS[introTier || 0];
   $("storyIntroTitle").textContent = b.title;
   $("storyIntroText").innerHTML = renderStoryLines(b.lines);
+  $("storySelect").classList.add("hidden");
   $("menu").classList.add("hidden");
   $("storyIntro").classList.remove("hidden");
 }
@@ -3068,7 +3116,7 @@ function startGame(m) {
       if (p.perks.startShield) p.shield = Math.max(p.shield, p.perks.startShield);
     }
   }
-  wave = mode === "rush" ? 5 : 1; bossKills = 0;
+  wave = mode === "rush" ? 5 : (mode === "story" ? storyStartWave : 1); bossKills = 0;
   waveTimer = 0; spawnTimer = 0.6;
   runEvent = null; runEventT = 18 + rng() * 15;
   rushTime = 0; runCoins = 0;
@@ -3088,7 +3136,7 @@ function startGame(m) {
   runKills = 0; runPU = 0; runGraze = 0; livesLost = 0; achT = 1;
   bullets = []; ebullets = []; enemies = []; particles = []; powerups = []; texts = []; shockwaves = []; bolts = [];
   boss = null;
-  ["menu","gameover","hangar","help","achievs","shop","storyIntro","storyBeat","vsSelect","bossBar"].forEach(id => $(id).classList.add("hidden"));
+  ["menu","gameover","hangar","help","achievs","shop","storySelect","storyIntro","storyBeat","vsSelect","bossBar"].forEach(id => $(id).classList.add("hidden"));
   ["hud","pauseBtn"].forEach(id => $(id).classList.remove("hidden"));
   ["bombBtn","dashBtn"].forEach(id => $(id).classList.toggle("hidden", mode === "versus"));
   if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
@@ -3207,7 +3255,7 @@ function buildShareCard() {
   g.font = "10px monospace"; g.fillStyle = "rgba(233,228,212,0.5)"; g.textAlign = "left";
   g.fillText("U1 · DO NOT SHORT", 26, 32);
   g.textAlign = "right";
-  g.fillText(todayStr() + " · REV 4.0", Wc - 26, 32);
+  g.fillText(todayStr() + " · REV 4.1", Wc - 26, 32);
   // 标题
   g.textAlign = "left";
   g.fillStyle = C.copper;
@@ -3297,7 +3345,7 @@ function togglePause() {
 }
 function toMenu() {
   state = S.MENU;
-  ["hud","pauseBtn","bombBtn","dashBtn","bossBar","gameover","pauseOverlay","hangar","help","achievs","shop","storyIntro","storyBeat","vsSelect","settings","checkinPage","shareView"].forEach(id => $(id).classList.add("hidden"));
+  ["hud","pauseBtn","bombBtn","dashBtn","bossBar","gameover","pauseOverlay","hangar","help","achievs","shop","storySelect","storyIntro","storyBeat","vsSelect","settings","checkinPage","shareView"].forEach(id => $(id).classList.add("hidden"));
   updateMenuStats();
   $("menu").classList.remove("hidden");
 }
@@ -3305,10 +3353,19 @@ function toMenu() {
 $("startBtn").addEventListener("click", () => startGame("normal"));
 $("dailyBtn").addEventListener("click", () => startGame("daily"));
 $("rushBtn").addEventListener("click", () => startGame("rush"));
-$("storyBtn").addEventListener("click", showStoryIntro);
+$("storyBtn").addEventListener("click", () => {
+  buildStorySelect();
+  $("menu").classList.add("hidden");
+  $("storySelect").classList.remove("hidden");
+});
+$("storySelBack").addEventListener("click", () => {
+  $("storySelect").classList.add("hidden");
+  $("menu").classList.remove("hidden");
+});
 $("storyIntroBack").addEventListener("click", () => {
   $("storyIntro").classList.add("hidden");
-  $("menu").classList.remove("hidden");
+  buildStorySelect();
+  $("storySelect").classList.remove("hidden");
 });
 $("storyBeginBtn").addEventListener("click", () => {
   $("storyIntro").classList.add("hidden");
@@ -3445,7 +3502,7 @@ const EN_HELP = `
       <b>Pause:</b> Space or P<br>
       <b>Control feel:</b> mouse/touch drag is razor-fast — pick it for wild, high-risk play; keyboard moves at a fixed speed — steadier and more precise. Both are fully supported.<br><br>
       <b>Daily challenge:</b> one fixed seed per day plus a daily modifier (enemy speed / spawns / lives...); scores are tracked separately.<br>
-      <b>Story mode:</b> follow the story of the signal defense line — each boss form defeated unlocks the next chapter.<br>
+      <b>Story mode:</b> follow the story of the signal defense line — each boss form defeated unlocks the next chapter and auto-saves; resume from any cleared chapter on the select screen.<br>
       <b>Boss Rush:</b> skip the fodder — a gauntlet of the three boss forms back to back; kills and time tracked separately.<br>
       <b>Random events:</b> timed events strike mid-run — ⚡ Overvolt (enemies +50% speed / score ×2), 💰 Data Rain (supply &amp; coin drops), 🌑 Bus Silence (bullets purged, slow-mo), 🧲 Magnet Storm (loot flies to you).<br>
       <b>Versus:</b> both players pick from your unlocked ships. Shared enemy waves on one screen, highest score wins. P1 = WASD + <b>Q</b> dash + <b>E</b> bomb; P2 = arrows + <b>Shift</b> dash + <b>Enter</b> bomb. Skin perks are disabled in versus — looks only.<br>
@@ -3472,7 +3529,7 @@ function applyLangDom() {
   $("langBtn").textContent = LANG === "zh" ? "EN" : "中文";
   if (LANG !== "en") return;
   document.documentElement.lang = "en";
-  document.title = "SIGNAL DEFENDER REV 4.0";
+  document.title = "SIGNAL DEFENDER REV 4.1";
   document.querySelectorAll("[data-en]").forEach(el => { el.innerHTML = el.dataset.en; });
   $("helpText").innerHTML = EN_HELP;
 }

@@ -1,6 +1,6 @@
 # SIGNAL // 信号防线 — 项目说明
 
-PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 4.0**。中英双语（面向国外求职展示，英文为对外默认）。
+PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 4.1**。中英双语（面向国外求职展示，英文为对外默认）。
 
 ## 链接
 
@@ -37,7 +37,8 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 - Boss 三形态: `spawnBoss()` 按 tier 轮换 core/thermal/glitch，各自 update 分支 + render 分支
 - `ACH[]` — 13 成就，带 reward(coins/skin)；`checkAch()` 局内每秒 + 结算时跑
 - `DAILY_MODS[]` + `mulberry32` — 每日挑战种子随机(日期字符串转种子)，只替换 gameplay 用的 `rng()`，视觉仍用 Math.random
-- `STORY_BEATS{}` — 主线剧情 4 章，角色: OPS(青)/NULL(红)/U1(金)，击败对应 Boss tier 触发
+- `STORY_BEATS{}` — 主线剧情 4 章，角色: OPS(青)/NULL(红)/U1(金)，击败对应 Boss tier 触发；`showStoryBeat()` 用 `Math.max` 存 `save.storyProgress`(每章自动存档)
+- `STORY_CHAPTERS[]` + 选章页 `#storySelect`(`buildStorySelect()`) — 4 章对应 Boss tier 1-4，起始波次 5N-4(1/6/11/16，留 4 波热身)；第 N 章通关第 N-1 章后解锁(`chapterUnlocked()`)；进入时 `openStoryIntro()` 设 `storyStartWave` 并展示对应过场(第 1 章=序章,后续章=上一章战后对白作回顾)，`startGame("story")` 从该波次续玩至终章
 - `players[]` — 多玩家结构(双人对战)，所有玩家状态挂在 player 对象上，没有全局 score/lives
 - 音频: `sfxGain`/`bgmMaster` 两条独立增益链，音量设置面板可调；BGM 为程序化合成循环；`SKIN_BGM{}` 高级战机专属曲目(aurum/core/reaper/prism)，`bgmProfile()` 按 save.skin 每小节取，换机即换曲
 - 子弹视觉: `mkBullet` 默认色取 skin.trailColor(prism 彩虹)；`perk.bulletShape` 换弹形(aurum="star")；武器专属色(homing/pierce/heavy/wave)不受影响
