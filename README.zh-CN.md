@@ -1,5 +1,7 @@
 # SIGNAL // 信号防线
 
+[![check](https://github.com/DavidWang1231/signal-defender/actions/workflows/check.yml/badge.svg)](https://github.com/DavidWang1231/signal-defender/actions/workflows/check.yml)
+
 [English](README.md) | **中文**
 
 > 一款 PCB 电路板美学的弹幕射击游戏 —— 全部代码在一个 HTML 文件里，零依赖，双击即玩。中英双语。
@@ -49,6 +51,19 @@ open index.html
 # 方式二:起个本地服务器(手机同 Wi-Fi 可访问)
 python3 -m http.server 8000
 ```
+
+## ✅ 自检
+
+没有测试框架 —— 弹幕游戏的回归是手感和画面，单元测试抓不到。取而代之的是一个零依赖脚本，只守四条**真会把游戏推坏**的不变量，CI 每次 push 都跑：
+
+```bash
+node scripts/check.mjs   # 只需要 node，没有任何依赖
+```
+
+- **syntax** —— 内联 `<script>` 必须能解析。单文件无构建，语法错误会直接推上 Pages 变白屏。
+- **version** —— `REV x.y` 散在四处，必须一致。
+- **i18n** —— 静态中文必须带 `data-en`，否则英文模式会漏出中文。
+- **zero-deps** —— 禁止外链 `<script src>`、`<link href>`、`@import` 和运行时 `fetch`。一条 CDN 字体就让它离线打不开。
 
 ## 🛠️ 技术
 

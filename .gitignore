@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# 本地工具设置（不进仓库）
+.claude/settings.local.json
+
+# 编辑器
+.vscode/
+.idea/

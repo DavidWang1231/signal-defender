@@ -15,10 +15,21 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 ## 发布流程
 
 1. 改 `index.html`
-2. 语法自检: 提取 `<script>` 内容后 `node --check`（无测试框架，靠这个 + 浏览器实测）
-3. 版本号在四处: `<title>`、主菜单 `.refdes`、成绩卡 `buildShareCard()` 的 `g.fillText`、以及英文模式 `applyLangDom()` 里的 `document.title`（格式 REV x.y），bump 时四处同步
+2. 提交前自检: `node scripts/check.mjs`（零依赖，node 内置模块；同一个脚本在 CI 里跑）
+3. 版本号在四处: `<title>`、主菜单 `.refdes`、成绩卡 `buildShareCard()` 的 `g.fillText`、以及英文模式 `applyLangDom()` 里的 `document.title`（格式 REV x.y），bump 时四处同步——漏改 check 会报出是哪一处
 4. `git commit` + `git push` → Pages 约 1 分钟自动更新
 5. 大版本再打 tag + `gh release create`
+
+## 自检脚本 `scripts/check.mjs`
+
+没有测试框架（canvas 游戏的回归是手感和视觉，单测抓不到），所以只自动化四条**真会把游戏推坏**的不变量，其余靠浏览器实测：
+
+1. **syntax** — `vm.Script` 编译内联 `<script>`。单文件无构建，语法错误会直接推上 Pages 变白屏，没有任何环节拦得住，这条最重要
+2. **version** — 所有 `REV x.y` 必须一致，漏改会精确报出行号
+3. **i18n** — 静态 HTML 里的中文必须带 `data-en`，否则英文模式漏中文。自动豁免三类：`<style>`/`<script>` 内部、整块换成 `EN_HELP` 的说明书、以及被 JS 写 `textContent`/`innerHTML` 的占位文本（那些走 `T()`）
+4. **zero-deps** — 禁止外链 `<script src>`/`<link href>`/`@import`/`url(http)` 和运行时 `fetch`/`XHR`，守住"双击即玩、离线可玩"
+
+CI 见 `.github/workflows/check.yml`，push 到 main 和 PR 都跑，无 install 步骤。改脚本后请确认它在注入错误时**真的会红**（一个不会失败的检查等于没有检查）。
 
 ## i18n（REV 3.5 起）
 

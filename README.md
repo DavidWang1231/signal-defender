@@ -1,5 +1,7 @@
 # SIGNAL // Signal Defender
 
+[![check](https://github.com/DavidWang1231/signal-defender/actions/workflows/check.yml/badge.svg)](https://github.com/DavidWang1231/signal-defender/actions/workflows/check.yml)
+
 **English** | [中文](README.zh-CN.md)
 
 > A PCB-aesthetic bullet-hell shooter that lives in a single HTML file — zero dependencies, no build step, double-click to play. Fully bilingual (EN / 中文).
@@ -49,6 +51,19 @@ open index.html
 # option 2: serve it (playable from a phone on the same Wi-Fi)
 python3 -m http.server 8000
 ```
+
+## ✅ Checks
+
+There is no test framework — the regressions in a bullet-hell game are feel and pixels, which unit tests don't catch. Instead one dependency-free script guards the four invariants that can actually ship a broken build, and CI runs it on every push:
+
+```bash
+node scripts/check.mjs   # needs nothing but node
+```
+
+- **syntax** — the inline `<script>` must parse. With no build step, a syntax error would deploy straight to Pages as a blank screen.
+- **version** — the `REV x.y` string lives in four places and must agree.
+- **i18n** — every piece of static Chinese needs a `data-en` counterpart, or English mode leaks Chinese.
+- **zero-deps** — no external `<script src>`, `<link href>`, `@import`, or runtime `fetch`. One CDN font would break offline play.
 
 ## 🛠️ Tech
 
