@@ -8,7 +8,17 @@
 
 **🎮 在线试玩：[https://davidwang1231.github.io/signal-defender/](https://davidwang1231.github.io/signal-defender/)**
 
+![Boss 战实况 —— 躲避热失控的螺旋弹幕](media/gameplay.gif)
+
 你是主板上仅存的仲裁核心 U1。深夜，一段陌生信号沿总线蔓延，吞噬相邻的逻辑门——启动防御协议，守住这块电路板。
+
+| Boss 战 | 分享成绩卡 |
+|---|---|
+| ![热失控 Boss 战](media/boss.png) | ![PCB 风格成绩卡](media/sharecard.png) |
+
+| 主菜单 | 机库 |
+|---|---|
+| ![主菜单](media/menu.png) | ![机库 —— 23 架战机与专属特性](media/hangar.png) |
 
 ## ✨ 特性
 

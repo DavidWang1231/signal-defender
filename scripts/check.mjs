@@ -102,6 +102,7 @@ section("i18n");
     if (/^\s*<!--/.test(l)) return;
     if (/data-en=/.test(l)) return;
     if (/<title>/.test(l)) return; // applyLangDom() 里设 document.title
+    if (/^\s*<meta\s/.test(l)) return; // meta 内容不渲染给用户
     const id = l.match(/id="([\w-]+)"/)?.[1];
     if (id && jsDriven.has(id)) return;
     leaks.push({ line: i + 1, text: l.trim().slice(0, 80) });

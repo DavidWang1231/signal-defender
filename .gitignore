@@ -1,6 +1,11 @@
 # macOS
 .DS_Store
 
+# scripts/capture.mjs 的临时依赖(npm i --no-save)
+node_modules/
+package.json
+package-lock.json
+
 # 本地工具设置（不进仓库）
 .claude/settings.local.json
 

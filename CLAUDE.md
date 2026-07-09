@@ -1,6 +1,6 @@
 # SIGNAL // 信号防线 — 项目说明
 
-PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 4.2**。中英双语（面向国外求职展示，英文为对外默认）。
+PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 里**（HTML+CSS+JS 约 3000 行），零依赖、无构建、无外部资源，双击即玩。当前版本 **REV 4.3**。中英双语（面向国外求职展示，英文为对外默认）。
 
 ## 链接
 
@@ -31,6 +31,14 @@ PCB 电路板美学的弹幕射击游戏。**全部代码在单个 `index.html` 
 
 CI 见 `.github/workflows/check.yml`，push 到 main 和 PR 都跑，无 install 步骤。改脚本后请确认它在注入错误时**真的会红**（一个不会失败的检查等于没有检查）。
 
+## media/ 与 README 素材
+
+- `media/` 存 README 用的截图、`gameplay.gif` 和社交预览图 `og.png`——**og.png 被 index.html 的 og:image/twitter:image meta 引用（绝对 Pages URL），改名或删除会断外链预览**
+- 重新生成: 仓库根 `npm i --no-save playwright pngjs gifenc && node scripts/capture.mjs`（用系统 Chrome，会写满 media/；产物需人工过目再提交）
+- 注意游戏整体包在 IIFE 里，外部脚本摸不到内部变量；capture.mjs 靠内存中替换注入 `window.__hook = c => eval(c)` 驱动游戏（不落盘、不碰仓库文件）
+- 大版本 UI 变化后应重截，README 双语两份都引用同一套 media/
+- GitHub 仓库的 Social preview 图 API 设不了，需在 Settings → Social preview 手动上传 media/og.png
+
 ## i18n（REV 3.5 起）
 
 - 语言在 script 最顶部确定：`LANG`（localStorage 键 `signal_lang` > 浏览器语言，非中文默认英文），切换按钮 `#langBtn` 写入后 `location.reload()`
@@ -43,7 +51,8 @@ CI 见 `.github/workflows/check.yml`，push 到 main 和 PR 都跑，无 install
 
 - `SKINS[]` — 23 架战机: 条件解锁(unlock) / 商店(shop:{series,price}) / 奖励(reward)三类；perk 字段驱动特性；aurum 由签到解锁
 - 每日签到: 手动点击制。上线日记入 `save.visits`(留 30 天),`save.checkin={claimed:{date:1},streak,last}`(自动从 3.6 旧档迁移);`pendingCheckins()` 列出上线过但未签的日期,`claimCheckin()` 按时间序逐天签(含补签,前一天已签则连击续),连续 7 天解锁 aurum,已拥有后 day7 改 +300 额外金币;签到页 `#checkinPage`(`buildCheckinPage()`,7 张奖励卡,day7 有 aurum 动画预览),有待签时启动自动弹出
-- 暂停键: 空格或 P(togglePause 先 blur 焦点,防空格重复触发按钮)
+- 暂停键: 空格或 P(togglePause 先 blur 焦点,防空格重复触发按钮);切后台(visibilitychange)游戏中自动暂停——rAF 后台冻结但 BGM 的 setInterval 不冻结,不暂停音乐会独自继续
+- 开局提示: startGame 里 IS_MOBILE 显示触控提示,桌面端首局(save.keyHint 未设)显示 SHIFT/B 按键提示;**必须放在 texts=[] 清场之后**(4.3 修过一次刚加就被抹掉的 bug)
 - `GUNS{}` — 武器系统: default/twin/homing/pierce/heavy/wave，经 `perk.gun` 绑定到战机；子弹由 `mkBullet()` 生成，支持 pierce/homing/wobble/dmg/shape
 - Boss 三形态: `spawnBoss()` 按 tier 轮换 core/thermal/glitch，各自 update 分支 + render 分支
 - `ACH[]` — 13 成就，带 reward(coins/skin)；`checkAch()` 局内每秒 + 结算时跑

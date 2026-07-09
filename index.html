@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>SIGNAL // 信号防线 REV 4.2</title>
+<meta name="description" content="PCB-aesthetic bullet-hell shooter in a single HTML file — zero dependencies, 6 game modes, synthesized audio. EN/中文.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SIGNAL // Signal Defender">
+<meta property="og:description" content="PCB-aesthetic bullet-hell shooter in a single HTML file — zero dependencies, 6 game modes, synthesized audio. EN/中文.">
+<meta property="og:url" content="https://davidwang1231.github.io/signal-defender/">
+<meta property="og:image" content="https://davidwang1231.github.io/signal-defender/media/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://davidwang1231.github.io/signal-defender/media/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='12'%20fill='%2306231a'/%3E%3Cpath%20d='M8%2032h13M43%2032h13M32%208v13M32%2043v13'%20stroke='%23e8833a'%20stroke-width='4'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='11'%20fill='none'%20stroke='%23e6c15a'%20stroke-width='4'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='4'%20fill='%23e6c15a'/%3E%3C/svg%3E">
+<title>SIGNAL // 信号防线 REV 4.3</title>
 <style>
   :root {
     --bg: #06231a;
@@ -304,7 +313,7 @@
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <button id="langBtn" class="ctl" style="top:12px;left:12px;font-size:12px;padding:7px 12px;z-index:11">EN</button>
-    <div class="refdes">REV 4.2 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
+    <div class="refdes">REV 4.3 &nbsp;·&nbsp; U1 &nbsp;·&nbsp; DO NOT SHORT</div>
     <div class="brand">SIGNAL</div>
     <div class="brand-sub" data-en="D E F E N D E R">信 号 防 线</div>
     <div id="checkinCard"></div>
@@ -3137,13 +3146,19 @@ function startGame(m) {
   waveBanner = dailyMod ? 3 : 2;
   bannerText = dailyMod ? `DAILY // ${dailyMod.name}${T(":", ": ")}${dailyMod.desc}` : T("WAVE 1 // 第 1 波", "WAVE 1");
   shake = 0; hitFlash = 0;
-  if (IS_MOBILE && mode !== "versus") {
-    addText(W / 2, H * 0.45, T("单指拖动移动 · 第二根手指点按 = 冲刺", "Drag with one finger · tap with a 2nd finger = dash"), C.shield, 3.5);
-    addText(W / 2, H * 0.45 + 24, T("左下 DASH 冲刺 · 右下 EMP 清屏", "Bottom-left DASH · bottom-right EMP"), C.shield, 3.5);
-  }
   runKills = 0; runPU = 0; runGraze = 0; livesLost = 0; achT = 1;
   bullets = []; ebullets = []; enemies = []; particles = []; powerups = []; texts = []; shockwaves = []; bolts = [];
   boss = null;
+  // 开局操作提示必须放在上面 texts=[] 清场之后,否则刚加就被抹掉
+  if (IS_MOBILE && mode !== "versus") {
+    addText(W / 2, H * 0.45, T("单指拖动移动 · 第二根手指点按 = 冲刺", "Drag with one finger · tap with a 2nd finger = dash"), C.shield, 3.5);
+    addText(W / 2, H * 0.45 + 24, T("左下 DASH 冲刺 · 右下 EMP 清屏", "Bottom-left DASH · bottom-right EMP"), C.shield, 3.5);
+  } else if (!IS_MOBILE && mode !== "versus" && !save.keyHint) {
+    // 桌面端首局按键提示,只出现一次(冲刺无敌帧是核心机制,manual 里未必会看)
+    addText(W / 2, H * 0.45, T("SHIFT = 冲刺(无敌帧)", "SHIFT = dash (invincible frames)"), C.shield, 6);
+    addText(W / 2, H * 0.45 + 24, T("B = EMP 炸弹清屏 · 空格 = 暂停", "B = EMP bomb · SPACE = pause"), C.shield, 6);
+    save.keyHint = 1; persist();
+  }
   ["menu","gameover","hangar","help","achievs","shop","storySelect","storyIntro","storyBeat","vsSelect","bossBar"].forEach(id => $(id).classList.add("hidden"));
   ["hud","pauseBtn"].forEach(id => $(id).classList.remove("hidden"));
   ["bombBtn","dashBtn"].forEach(id => $(id).classList.toggle("hidden", mode === "versus"));
@@ -3263,7 +3278,7 @@ function buildShareCard() {
   g.font = "10px monospace"; g.fillStyle = "rgba(233,228,212,0.5)"; g.textAlign = "left";
   g.fillText("U1 · DO NOT SHORT", 26, 32);
   g.textAlign = "right";
-  g.fillText(todayStr() + " · REV 4.2", Wc - 26, 32);
+  g.fillText(todayStr() + " · REV 4.3", Wc - 26, 32);
   // 标题
   g.textAlign = "left";
   g.fillStyle = C.copper;
@@ -3351,6 +3366,11 @@ function togglePause() {
     $("pauseOverlay").classList.add("hidden");
   }
 }
+// 切后台自动暂停:rAF 在后台标签页冻结,但 BGM 走 setInterval 会继续响;
+// 也避免手机切回来瞬间被弹幕命中
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && state === S.PLAY) togglePause();
+});
 function toMenu() {
   state = S.MENU;
   ["hud","pauseBtn","bombBtn","dashBtn","bossBar","gameover","pauseOverlay","hangar","help","achievs","shop","storySelect","storyIntro","storyBeat","vsSelect","settings","checkinPage","shareView"].forEach(id => $(id).classList.add("hidden"));
@@ -3537,7 +3557,7 @@ function applyLangDom() {
   $("langBtn").textContent = LANG === "zh" ? "EN" : "中文";
   if (LANG !== "en") return;
   document.documentElement.lang = "en";
-  document.title = "SIGNAL DEFENDER REV 4.2";
+  document.title = "SIGNAL DEFENDER REV 4.3";
   document.querySelectorAll("[data-en]").forEach(el => { el.innerHTML = el.dataset.en; });
   $("helpText").innerHTML = EN_HELP;
 }

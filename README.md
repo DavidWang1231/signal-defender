@@ -8,7 +8,17 @@
 
 **🎮 Play online: [https://davidwang1231.github.io/signal-defender/](https://davidwang1231.github.io/signal-defender/)**
 
+![Boss fight gameplay — dodging a spiral barrage from Thermal Runaway](media/gameplay.gif)
+
 You are U1, the last arbitration core still awake on the motherboard. Late one night, an unknown signal starts crawling along the bus, erasing the logic gates around it — bring the defense protocol online and hold the board.
+
+| Boss fight | Shareable score card |
+|---|---|
+| ![Thermal Runaway boss battle](media/boss.png) | ![PCB-styled score card](media/sharecard.png) |
+
+| Main menu | Hangar |
+|---|---|
+| ![Main menu](media/menu.png) | ![Hangar — 23 ships with perks](media/hangar.png) |
 
 ## ✨ Features
 
